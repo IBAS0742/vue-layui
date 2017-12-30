@@ -1,0 +1,352 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>common doc</title>
+    <link rel="stylesheet" href="../../layui-221/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../js/ztree/css/metroStyle/metroStyle.css"/>
+    <!--<link rel="stylesheet" href="../../hightlight/styles/default.css"/>-->
+    <link rel="stylesheet" href="../../hightlight/styles/atom-one-dark.css"/>
+    <style>
+        .ibas-fn {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-collapse">
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">函数初略说明</h2>
+        <div class="layui-colla-content" style="overflow: scroll;">
+            <p>函数封装时期不同，可能代码风格不是很一致。</p>
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>函数</th>
+                    <th>CookieManage</th>
+                    <th>sessionStorageManage</th>
+                    <th>localStorageManage</th>
+                    <th>nullStorageManage</th>
+                    <th>splitAttrForManage</th>
+                    <th>bindToCache</th>
+                    <th>pageManage</th>
+                    <th>sailPromise</th>
+                    <th>$AjaxProxy</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="min-width:100px;padding: 0;border: none;"></td>
+                    <td style="min-width:305px;padding: 0;border: none;"></td>
+                    <td style="min-width:300px;padding: 0;border: none;"></td>
+                    <td style="min-width:300px;padding: 0;border: none;"></td>
+                    <td style="min-width:300px;padding: 0;border: none;"></td>
+                    <td style="min-width:300px;padding: 0;border: none;"></td>
+                    <td style="min-width:300px;padding: 0;border: none;"></td>
+                    <td style="min-width:330px;padding: 0;border: none;"></td>
+                    <td style="min-width:300px;padding: 0;border: none;"></td>
+                    <td style="min-width:300px;padding: 0;border: none;"></td>
+                </tr>
+                <tr>
+                    <td>作用</td>
+                    <td>Cookie 缓存管理器</td>
+                    <td>sessionStorage 缓存管理器</td>
+                    <td>localStorage 缓存管理器</td>
+                    <td>空 缓存管理器</td>
+                    <td>对象分割</td>
+                    <td>对象缓存绑定管理</td>
+                    <td>基于 layer 的页面管理器</td>
+                    <td>基于 ajax 的 promise 管理器</td>
+                    <td>ajax (代理)管理器</td>
+                </tr>
+                <tr>
+                    <td>暴露接口</td>
+                    <td>
+                        <span class="layui-badge layui-bg-blue ibas-fn">add(args)</span>:添加(名称,值,缓存时长,缓存路径)<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">del(args)</span>:删除(名称,缓存路径)<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">change(args)</span>:修改(名称,值)<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">get(args)</span>:获取(名称)<br/>
+                    </td>
+                    <td>
+                        <span class="layui-badge layui-bg-blue ibas-fn">add(args)</span>:添加(名称,值)<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">del(args)</span>:删除(名称)<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">change(args)</span>:修改(名称,值)<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">get(args)</span>:获取(名称)<br/>
+                    </td>
+                    <td>
+                        <span class="layui-badge layui-bg-blue ibas-fn">add(args)</span>:添加(名称,值)<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">del(args)</span>:删除(名称)<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">change(args)</span>:修改(名称,值)<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">get(args)</span>:获取(名称)<br/>
+                    </td>
+                    <td>
+                        四个空接口<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">add()</span>:添加()<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">del()</span>:删除()<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">change()</span>:修改()<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">get()</span>:获取()<br/>
+                    </td>
+                    <td>
+                        该对象为函数，有以下用法<br/>
+                        safm = splitAttrForManage;<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">safm(obj,'obj.path')</span><br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">safm(fn,'obj.path',fnParam1,fnParam2)</span><br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">safm(fn,fnParam1,fnParam2)</span><br/>
+                    </td>
+                    <td>
+                        该对象为函数
+                        <span class="layui-badge layui-bg-blue ibas-fn">函数参数较多</span>
+                    </td>
+                    <td>
+                        该对象为函数，需要进行初始化<br/>
+                        pageManage(layer)<br/>
+                        使用到 layer 的 open 弹窗<br/>
+                        初始化后暴露以下方法<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">addPages(arr)</span>:添加页面信息<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">addPage(args)</span>:添加一个页信息(...)<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">closePage(name)</span>:关闭页面(页面名称)<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">showPage(args)</span>:打开页面(页面名称,参数)<br/>
+                        <span class="layui-badge layui-bg-blue ibas-fn">changeArgs(args)</span>:修改页面属性(页面名称,参数)
+                    </td>
+                    <td>
+                        该对象为函数，需要进行初始化<br/>
+                        sailPromise(ajax)<br/>
+                        使用到 $.ajax 函数，建议为<br/>
+                        sailPromise($.ajax.bind($))<br/>
+                        暴露方法 <span class="layui-badge layui-bg-blue ibas-fn">getPromise</span><br/>
+                        该方法用户设置和获取 promise 封装对象
+                    </td>
+                    <td>
+                        该对象为函数，需要进行初始化<br/>
+                        $AjaxProxy($,baseUrl)<br/>
+                        使用到 jQuery 中的 ajax 函数<br/>
+                        baseUrl 为基础访问路径<br/>
+                        暴露 <span class="layui-badge layui-bg-blue ibas-fn">set</span> ,
+                        <span class="layui-badge layui-bg-blue ibas-fn">sets</span> 方法
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">缓存函数说明</h2>
+        <div class="layui-colla-content" style="overflow: scroll;">
+            <p>cookie 管理器多了一个存储时长和存储路径的设置参数</p>
+            <p>null 管理器仅仅是为了适应 bindToCache 对象而设计</p>
+            <p>缓存管理器支持缓存对象，函数没定义缓存</p>
+            <div class="common scripting">
+                <pre style="line-height: initial;">
+                    <code class="xml hljs" id="cacheHTML">
+                    </code>
+                </pre>
+            </div>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">splitAttrForManage 函数说明</h2>
+        <div class="layui-colla-content" style="overflow: scroll;">
+            <p>该方法能将通过对象路径对对象进行获取</p>
+            <div class="common scripting">
+                <pre style="line-height: initial;">
+                    <code class="xml hljs" id="splitAttrForManageHTML">
+                    </code>
+                </pre>
+            </div>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">bindToCache 函数说明</h2>
+        <div class="layui-colla-content" style="overflow: scroll;">
+            <p>将对象和缓存进行绑定</p>
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>参数字段</th>
+                        <th>obj</th>
+                        <th>cacheManage</th>
+                        <th>cacheName</th>
+                        <th>init</th>
+                        <th>check</th>
+                        <th>options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="min-width:100px;padding: 0;border: none;"></td>
+                    <td style="min-width:140px;padding: 0;border: none;"></td>
+                    <td style="min-width:130px;padding: 0;border: none;"></td>
+                    <td style="min-width:130px;padding: 0;border: none;"></td>
+                    <td style="min-width:130px;padding: 0;border: none;"></td>
+                    <td style="min-width:130px;padding: 0;border: none;"></td>
+                    <td style="min-width:170px;padding: 0;border: none;"></td>
+                </tr>
+                    <tr>
+                        <td>可空</td>
+                        <td><span class="layui-badge">是</span></td>
+                        <td><span class="layui-badge">是</span></td>
+                        <td><span class="layui-badge layui-bg-blue">否</span></td>
+                        <td><span class="layui-badge">是</span></td>
+                        <td><span class="layui-badge">是</span></td>
+                        <td><span class="layui-badge">是</span></td>
+                    </tr>
+                    <tr>
+                        <td>类型</td>
+                        <td><span class="layui-badge layui-bg-orange">对象</span></td>
+                        <td><span class="layui-badge layui-bg-orange">对象</span></td>
+                        <td><span class="layui-badge layui-bg-blue">字符串</span></td>
+                        <td><span class="layui-badge layui-bg-green">布尔</span></td>
+                        <td><span class="layui-badge">函数</span></td>
+                        <td><span class="layui-badge layui-bg-orange">对象</span></td>
+                    </tr>
+                    <tr>
+                        <td>示例</td>
+                        <td>{}<br/>{ name : "ibas" }</td>
+                        <td>上面介绍的四个存储对象</td>
+                        <td>任意名称字符串</td>
+                        <td>true false</td>
+                        <td>
+                            function(obj) {<br/>&nbsp;&nbsp;&nbsp;return obj;<br/> }<br/>
+                            该函数返回内容如果不为空，返回内容将作为缓存内容。
+                        </td>
+                        <td>
+                            {<br/>
+                            &nbsp;&nbsp;&nbsp;set : function(){}<br/>
+                            &nbsp;&nbsp;&nbsp;get : function(){}<br/>
+                            &nbsp;&nbsp;&nbsp;del : function(){}<br/>
+                            }</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="common scripting">
+                <pre style="line-height: initial;">
+                    <code class="xml hljs" id="bindToCacheHTML">
+                    </code>
+                </pre>
+            </div>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">$AjaxProxy 函数说明</h2>
+        <div class="layui-colla-content" style="overflow: scroll;">
+            <div class="common scripting">
+                <pre style="line-height: initial;">
+                    <code class="xml hljs" id="AjaxProxyHTML">
+                    </code>
+                </pre>
+            </div>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">说明</h2>
+        <div class="layui-colla-content" style="overflow: scroll;">
+            <p>太累了，其他函数看源文件吧，demodoc 很详细的。</p>
+        </div>
+    </div>
+</div>
+<script src="../../js/config/child.js"></script>
+<script src="../../layui-221/layui.js"></script>
+<script src="../../js/vue/vue.js"></script>
+<script src="../../hightlight/highlight.pack.js"></script>
+<script>
+    layui.use(['jquery','layer','element'], function() {
+        var element = layui.element,
+            $ = layui.jquery;
+        {
+            $("#cacheHTML").html(hljs.highlightAuto(
+'sessionStorageManage.add("ibas",{name : "ibas"});\n\
+//=> {sessionStorageManage}\n\
+sessionStorageManage.get("ibas");\n\
+//=> {name:"ibas"}\n\
+//同理 localStorageManage,CookieManage 用法一致'
+            ).value);
+        }
+        //splitAttrForManageHTML
+        {
+            $("#splitAttrForManageHTML").html(hljs.highlightAuto(
+'var a = {\n\
+    b : {\n\
+        c : "d"\n\
+    }\n\
+};\n\
+splitAttrForManage(a,"b.c");\n\
+// => "d"\n\
+splitAttrForManage(() => { return a;},".b.c");\n\
+// => "d"\n\
+splitAttrForManage((arg) => { return arg;},".b.c",a);\n\
+// => "d"\n\
+splitAttrForManage((arg1,arg) => { console.log(arg1);return arg;},\'a.b.c\',a);\n\
+// => "a","d"'
+            ).value);
+        }
+        //bindToCacheHTML
+        {
+            $("#bindToCacheHTML").html(hljs.highlightAuto(
+'var a = {\n\
+    name : ""\n\
+};\n\
+var proA = bindToCache(\n\
+    a,\n\
+    CookieManage,\n\
+    "a",\n\
+    true,\n\
+    function(a) {\n\
+        if (a) {\n\
+            return a.name = "ibas",a;\n\
+        } else {\n\
+            return a;\n\
+        }\n\
+    },{\n\
+        set : function($this,prop,value) {\n\
+            return value + "-set";\n\
+        },\n\
+        get : function() {},//该方法实际上未实现\n\
+        del : function() {}\n\
+    });\n\
+// => Proxy {name : "",__exist___ : true,_die_ : f}\n\
+console.log(proA.name);\n\
+// => ""\n\
+proA.name = "ibas";console.log(proA.name);\n\
+// => "ibas-set"\n\
+CookieManage.get("a");\n\
+// => {name : "ibas-set",___exist___ : true }'
+            ).value);
+        }
+        //AjaxProxyHTML
+        {
+            $("#AjaxProxyHTML").html(hljs.highlightAuto(
+'/* obj = {\n\
+*      type : "get/post/put",//发送类型\n\
+*      jsonType : "strict/normal/join",//严格/正常/连接\n\
+*      name ; "login",//相当于id,\n\
+*      url : "/hello/login",//请求位置 也可以相当于id,\n\
+*      others : {},\n\
+*      preUlr : "",默认使用 baseUrl 作为 url 前缀\n\
+* }\n\
+* $AjaxProxy.sets([obj,obj,...]);\n\
+* $AjaxProxy.set(obj);\n\
+*/\n\
+$AjaxProxy($,"http://...").set({\n\
+    type : "get",\n\
+    name : "用于调用",\n\
+    url : "/kkk", //=> http://.../kkk\n\
+    preUlr : "http://???" //=> 将链接修正为 http://???/kkk\n\
+});\n\
+$.ajax({\n\
+    name : "用于调用",\n\
+    data : {},\n\
+    success : function(){}\n\
+});'
+            ).value);
+        }
+        //s
+        {
+            $("#s").html(hljs.highlightAuto(
+                ""
+            ).value);
+        }
+    });
+</script>
+</body>
+</html>

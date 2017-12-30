@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui.form小例子</title>
+    <link rel="stylesheet" href="../../layui-221/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../js/ztree/css/metroStyle/metroStyle.css"/>
+    <!--<link rel="stylesheet" href="../../hightlight/styles/default.css"/>-->
+    <link rel="stylesheet" href="../../hightlight/styles/atom-one-dark.css"/>
+</head>
+<body style="padding: 0.5em;">
+    <div>
+        <button class="layui-btn layui-btn-lg" id="layui-table">Layui 数据表格文档</button>
+    </div>
+    <div class="layui-collapse">
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">表格修改说明</h2>
+            <div class="layui-colla-content layui-show">
+                <fieldset class="layui-elem-field">
+                    <legend>说明</legend>
+                    <div class="layui-field-box">
+                        该框架使用了 layui-2.2.1 版本，为 table 添加了 3 个参数
+                        <hr class="layui-bg-orange">
+                        1.ajaxoption 参数<br/>
+                        由于 layui 使用了 jquery.ajax 而，
+                        某一些请求内容可能需要限定头部或者配置 beforeSend 参数，
+                        这里使用了 ajaxoption，会在 render 时使用 jquery.ajaxSetup(ajaxoption) 方法，
+                        对 ajax 请求进行配置。
+                        <hr class="layui-bg-green">
+                        2.ajax<br/>
+                        如果配置该参数，则上面参数无效，建议使用方法是<br/>
+                        var ajax = $.ajax.bind($);<br/>
+                        $.ajaxSetup({});<br/>
+                        table.render({ ajax : ajax , ...});<br/><br/>
+                        推荐配合 common.js 中的 $AjaxProxy <br/>
+                        $AjaxProxy($,"http://...");<br/>
+                        $AjaxProxy.set({<br/>
+                        &nbsp;&nbsp;&nbsp;type : "get",<br/>
+                        &nbsp;&nbsp;&nbsp;name : "调用名称",<br/>
+                        &nbsp;&nbsp;&nbsp;url : "/use/one"<br/>
+                        });<br/>
+                        var ajax = $.ajax.bind($);<br/>
+                        table.render({<br/>
+                        &nbsp;&nbsp;&nbsp;ajax : ajax ,<br/>
+                        &nbsp;&nbsp;&nbsp;name : "调用名称",<br/>
+                        &nbsp;&nbsp;&nbsp;...<br/>
+                        });
+                        <hr class="layui-bg-blue">
+                        3.dearwith 方法<br/>
+                        该方法为 ajax 请求回调后数据的预处理方法<br/>
+                        格式为<br/>
+                        function(ret) {<br/>
+                        &nbsp;&nbsp;&nbsp;/* 处理过程 */<br/>
+                        &nbsp;&nbsp;&nbsp;/* 返回对象作为 table 渲染使用的数据 */<br/>
+                        &nbsp;&nbsp;&nbsp;return obj;<br/>
+                        }
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">表格示例</h2>
+            <div class="layui-colla-content layui-show">
+                <div id="test"></div>
+            </div>
+        </div>
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">表格代码</h2>
+            <div class="layui-colla-content layui-show">
+                <div class="common scripting">
+                <pre style="line-height: initial;">
+                    <code class="xml hljs" id="base">
+                    </code>
+                </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="../../js/config/child.js"></script>
+<script src="../../layui-221/layui.js"></script>
+<script src="../../js/vue/vue.js"></script>
+<script src="../../hightlight/highlight.pack.js"></script>
+<script>
+    layui.use(['jquery','table'],function () {
+        var $ = layui.jquery;
+        $("#layui-table").on("click",function () {
+            pageManage.showPage("layui-table");
+        });
+
+        var table = layui.table;
+
+        table.render({
+            elem: '#test'
+            ,ajax : ajax
+            ,name : "tableExample"
+            ,dearwith : function (ret) {
+                for (var i = 0;i < ret.data.length;i++) {
+                    ret.data[i].col3 = ret.data[i].col1.toString().split("").join("*");
+                    ret.data[i].col4 = ret.data[i].col2.toString().split("").join("-");
+                }
+            }
+            ,cols: [[
+                {type:'checkbox'}
+                ,{field:'id', width:80, title: 'ID', sort: true}
+                ,{field:'col1', width:80, title: '第一列'}
+                ,{field:'col2', width:80, title: '第二列', sort: true}
+                ,{field:'col3', width:80, title: '由第一列获取',minWidth : 100}
+                ,{field:'col4', width:80, title: '由第二列获取', sort: true,minWidth : 100}
+            ]]
+            ,page: true
+        });
+
+        $("#base").html(hljs.highlightAuto(
+'$AjaxProxy.set({\n\
+    name : "tableExample",\n\
+    url : "/tableE.json",\n\
+    type : "get"\n\
+});\n\
+table.render({\n\
+    elem: "#test"\n\
+    ,ajax : ajax\n\
+    ,name : "tableExample"\n\
+    ,dearwith : function (ret) {\n\
+        for (var i = 0;i < ret.data.length;i++) {\n\
+            ret.data[i].col3 = ret.data[i].col1.toString().split("").join("*");\n\
+            ret.data[i].col4 = ret.data[i].col2.toString().split("").join("-");\n\
+        }\n\
+    }\n\
+    ,cols: [[\n\
+        {type:"checkbox"}\n\
+        ,{field:"id", width:80, title: "ID", sort: true}\n\
+        ,{field:"col1", width:80, title: "第一列"}\n\
+        ,{field:"col2", width:80, title: "第二列", sort: true}\n\
+    ]]\n\
+    ,page: true\n\
+});'
+        ).value);
+    });
+</script>
+</body>
+</html>

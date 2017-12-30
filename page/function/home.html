@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui.form小例子</title>
+    <link rel="stylesheet" href="../../layui-221/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../js/ztree/css/metroStyle/metroStyle.css"/>
+    <!--<link rel="stylesheet" href="../../hightlight/styles/default.css"/>-->
+    <link rel="stylesheet" href="../../hightlight/styles/atom-one-dark.css"/>
+</head>
+<body>
+<div>
+    <p style="margin: 0.5em;">挂载到 window.mainStore.state 下的参数</p>
+    <table style="margin-top: 0;" class="layui-table">
+        <thead>
+            <tr>
+                <th>参数</th>
+                <th>bottomHTML</th>
+                <th>pageOPName</th>
+                <th>logo</th>
+                <th>lefttopmenu</th>
+                <th>righttopmenu</th>
+                <th>tabFrame</th>
+                <th>tabTitle</th>
+                <th>menus</th>
+                <th>showMenu</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>类型</td>
+                <td>HTML String</td>
+                <td>String</td>
+                <td>HTML String</td>
+                <td>Array</td>
+                <td>Array</td>
+                <td>Array</td>
+                <td>Array</td>
+                <td>Array</td>
+                <td>boolean</td>
+            </tr>
+            <tr>
+                <td>可空</td>
+                <td>是</td>
+                <td>是</td>
+                <td>是</td>
+                <td>是</td>
+                <td>是</td>
+                <td>否</td>
+                <td>否</td>
+                <td>是</td>
+                <td>是</td>
+            </tr>
+            <tr>
+                <td>作用</td>
+                <td>底部文字<br/>例如 @Copy</td>
+                <td>操作按钮名称<br/>不重要</td>
+                <td>logo</td>
+                <td>左上角按钮组</td>
+                <td>右上角按钮组</td>
+                <td>打开的 tab 页面</td>
+                <td>代开的 tab 页标题</td>
+                <td>菜单</td>
+                <td>是否显示菜单</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="common scripting">
+        <pre style="line-height: initial;">
+            <code class="xml hljs" id="homeSetting">
+            </code>
+        </pre>
+    </div>
+
+</div>
+<script src="../../js/config/child.js"></script>
+<script src="../../layui-221/layui.js"></script>
+<script src="../../js/vue/vue.js"></script>
+<script src="../../hightlight/highlight.pack.js"></script>
+<script>
+    layui.use(['jquery'],function () {
+        var $ = layui.jquery;
+        {
+            $("#homeSetting").html(
+                hljs.highlightAuto(
+'mainStore.state.menus = [\n\
+    { //配置二级目录\n\
+        title : "",\n\
+        iconHtml : "",\n\
+        children : [\n\
+            {\n\
+                title : "",\n\
+                iconHtml : "",\n\
+                //该 id 作为 tab 的标识，不可重复且不为空\n\
+                id : "",\n\
+                href : ""\n\
+            }\n\
+        ]\n\
+    },\n\
+    { //配置一级目录\n\
+        title : "",\n\
+        iconHtml : "",\n\
+        //该 id 作为 tab 的标识，不可重复且不为空\n\
+        id : "",\n\
+        href : ""\n\
+    }\n\
+];\n\
+mainStore.state.logo = "后台系统";\n\
+mainStore.state.bottomHTML = "copyright @2017";\n\
+mainStore.state.pageOPName = "页面操作";\n\
+mainStore.state.lefttopmenu = [\n\
+    // {\n\
+    //     iconHtml : "<i class="iconfont icon-menu1"></i>",\n\
+    //     event : function () {\n\
+    //         console.log("fe");\n\
+    //     }\n\
+    // }\n\
+];\n\
+mainStore.state.righttopmenu = [\n\
+    {\n\
+        iconHtml : "<i class=\"iconfont icon-gonggao\"></i>",\n\
+        text : "日历",\n\
+        click : function () {\n\
+            layer.msg("。。。进行中");\n\
+        }\n\
+    },\n\
+    {\n\
+        iconHtml : "<i class=\"iconfont icon-gonggao\"></i>",\n\
+        text : "记事本",\n\
+        click : function(){\n\
+            pages.showPage("note");\n\
+        }\n\
+    }\n\
+];\n\
+mainStore.state.showMenu = false;\n\
+mainStore.state.tabFrame = [\n\
+    {\n\
+        url : "page/main.html"\n\
+    }\n\
+];\n\
+mainStore.state.tabTitles = [\n\
+    {\n\
+        iconHtml: "<i :class=\"indexIcon\"></i>",\n\
+        name: "主页",\n\
+        id : "first"\n\
+    }\n\
+];'
+                ).value
+            );
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主页</title>
+    <link rel="stylesheet" href="../layui-221/css/layui.css" media="all" />
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight" style="width:98%;padding : 0 2px;">
+    <div style="display: inline-block;">
+        <p style="margin-top: 10px;font-size: 1.2em;padding-left: 0.3em;">修改菜单</p>
+        <hr class="layui-bg-red" style="margin-top:0;">
+        <div id="functions">
+        </div>
+    </div>
+    <div style="display: inline-block;">
+        <p style="margin-top: 10px;font-size: 1.2em;padding-left: 0.3em;">打开页面</p>
+        <hr class="layui-bg-red" style="margin-top:0;">
+        <div id="page"></div>
+    </div>
+    <div style="display: inline-block;">
+        <p style="margin-top: 10px;font-size: 1.2em;padding-left: 0.3em;">动作</p>
+        <hr class="layui-bg-red" style="margin-top:0;">
+        <div id="action"></div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script type="text/javascript" src="../layui-221/layui.js"></script>
+<script type="text/javascript" src="../js/config/child.js"></script>
+<script>
+    pageManage
+        .addPages([
+            [
+                //装载 layui 官网 页面信息
+                "layui-org",{
+                    content : "http://www.layui.com/"
+                },1,true
+            ],
+            [
+                //装载 语法高亮例子 页面信息
+                "highligh",{
+                    content : "https://highlightjs.org/static/demo/"
+                },1,true
+            ],
+            [
+                //装载 z-tree 页面信息
+                "z-tree",{
+                    content : "http://www.treejs.cn/v3/main.php"
+                },1,true
+            ],
+            [
+                //装载 vue 页面信息
+                "vue-org",{
+                    content : "https://cn.vuejs.org/v2/guide/"
+                },1,true
+            ],
+            [
+                //装载 vux 页面信息
+                "vuex-org",{
+                    content : "https://vuex.vuejs.org/zh-cn/"
+                },1,true
+            ],
+            [
+                //装载 promise 页面信息
+                "promise-usage",{
+                    content : "https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+                },1,true
+            ],
+            [
+                //装载 proxy 页面信息
+                "proxy-usage",{
+                    content : "https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy"
+                },1,true
+            ]
+        ]);
+    var openTab = function () {
+        mainStore.state.tabFrame.push({
+            url : "./page/test.html"
+        });
+        mainStore.state.tabTitles.push({
+            iconHtml : "<i class='layui-icon'>&#xe6af;</i>",
+            name : "在 Tab 中打开一个页面",
+            id : "tab_" + parseInt(Math.random() * 100) + (new Date()).getTime()
+        });
+    };
+    var menus = {
+        "功能" : {
+            "title":"功能",
+            "iconHtml":'<i class="layui-icon">&#xe600;</i>',
+            "spread":false,
+            "children":[
+                {
+                    "title":"主页配置",
+                    "iconHtml":'<i class="layui-icon">&#xe68e;</i>',
+                    "href":"./page/function/home.html",
+                    "spread":false
+                },
+                {
+                    "title":"表单",
+                    "iconHtml":'<i class="layui-icon">&#xe63c;</i>',
+                    "href":"./page/function/form.html",
+                    "spread":false
+                },
+                {
+                    "title":"表单说明文档",
+                    "iconHtml":'<i class="layui-icon">&#xe63c;</i>',
+                    "href":"./page/function/formDoc.html",
+                    "spread":false
+                },
+                {
+                    "title":"common 方法说明",
+                    "iconHtml":'<i class="layui-icon">&#xe63c;</i>',
+                    "href":"./page/function/commonDoc.html",
+                    "spread":false
+                },
+                {
+                    "title":"修改 layui 的 table 方法",
+                    "iconHtml":'<i class="layui-icon">&#xe62d;</i>',
+                    "href":"./page/function/tableDoc.html",
+                    "spread":false
+                }
+            ]
+        },
+        "测试一" : {
+            "title":"测试",
+            "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+            "spread":false,
+            "children":[
+                {
+                    "title":"测试",
+                    "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                    "href":"./page/building.html",
+                    "spread":false
+                },
+                {
+                    "title":"测试",
+                    "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                    "href":"./page/building.html",
+                    "spread":false
+                },
+                {
+                    "title":"测试",
+                    "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                    "href":"./page/building.html",
+                    "spread":false
+                },
+                {
+                    "title":"测试",
+                    "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                    "href":"./page/building.html",
+                    "spread":false
+                }
+            ]
+        },
+        "测试二" : [
+            {
+                "title":"测试",
+                "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                "spread":false,
+                "children":[
+                    {
+                        "title":"测试",
+                        "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                        "href":"./page/building.html",
+                        "spread":false
+                    },
+                    {
+                        "title":"测试",
+                        "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                        "href":"./page/building.html",
+                        "spread":false
+                    },
+                    {
+                        "title":"测试",
+                        "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                        "href":"./page/building.html",
+                        "spread":false
+                    },
+                    {
+                        "title":"测试",
+                        "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                        "href":"./page/building.html",
+                        "spread":false
+                    }
+                ]
+            },
+            {
+                "title":"测试",
+                "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                "spread":false,
+                "children":[
+                    {
+                        "title":"测试",
+                        "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                        "href":"./page/building.html",
+                        "spread":false
+                    },
+                    {
+                        "title":"测试",
+                        "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                        "href":"./page/building.html",
+                        "spread":false
+                    },
+                    {
+                        "title":"测试",
+                        "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                        "href":"./page/building.html",
+                        "spread":false
+                    },
+                    {
+                        "title":"测试",
+                        "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                        "href":"./page/building.html",
+                        "spread":false
+                    }
+                ]
+            },
+            {
+                "title":"测试",
+                "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                "spread":false,
+                "children":[
+                    {
+                        "title":"测试",
+                        "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                        "href":"./page/building.html",
+                        "spread":false
+                    },
+                    {
+                        "title":"测试",
+                        "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                        "href":"./page/building.html",
+                        "spread":false
+                    },
+                    {
+                        "title":"测试",
+                        "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                        "href":"./page/building.html",
+                        "spread":false
+                    },
+                    {
+                        "title":"测试",
+                        "iconHtml":'<i class="iconfont icon-gonggao"></i>',
+                        "href":"./page/building.html",
+                        "spread":false
+                    }
+                ]
+            }
+        ]
+    };
+    var page = {
+        "图标" : "icons"
+    };
+    var action = {
+        "在 Tab 中打开一个页面" : openTab,
+        "打开侧栏" : function () {
+            mainStore.state.showMenu = "open";
+        },
+        "关闭侧栏" : function () {
+            mainStore.state.showMenu = "close";
+        },
+        "使用第三方库和技术说明" : function () {
+            layer.open({
+                type : 1,
+                area : ['200px','auto'],
+                content :
+                    '<button class="layui-btn" style="float: left;width: calc(100% - 0.4em);margin: 0.1em 0.2em;" onclick="pageManage.showPage(\'layui-org\')">layui</button>' +
+                    '<button class="layui-btn" style="float: left;width: calc(100% - 0.4em);margin: 0.1em 0.2em;" onclick="pageManage.showPage(\'highligh\')">语法高亮</button>' +
+                    '<button class="layui-btn" style="float: left;width: calc(100% - 0.4em);margin: 0.1em 0.2em;" onclick="pageManage.showPage(\'z-tree\')">z-tree</button>' +
+                    '<button class="layui-btn" style="float: left;width: calc(100% - 0.4em);margin: 0.1em 0.2em;" onclick="pageManage.showPage(\'vue-org\')">vue</button>' +
+                    '<button class="layui-btn" style="float: left;width: calc(100% - 0.4em);margin: 0.1em 0.2em;" onclick="pageManage.showPage(\'vuex-org\')">vuex</button>' +
+                    '<button class="layui-btn" style="float: left;width: calc(100% - 0.4em);margin: 0.1em 0.2em;" onclick="pageManage.showPage(\'promise-usage\')">js Promise</button>' +
+                    '<button class="layui-btn" style="float: left;width: calc(100% - 0.4em);margin: 0.1em 0.2em;" onclick="pageManage.showPage(\'proxy-usage\')">js Proxy</button>'
+            });
+        }
+    };
+    window.layer = {
+        open : function () {
+            console.log("wait");
+        }
+    };
+    layui.config({}).use(['layer','jquery'],function(){
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        var functions = $("#functions");
+
+        var index = 0;
+
+        var colors = [
+            "",
+            "layui-btn-primary",
+            "layui-btn-normal",
+            "layui-btn-warm",
+            "layui-btn-danger"
+        ];
+        var changeMenus = parent.changeMenus,i;
+        for (i in menus) {
+            var inp = $(
+                '<div style="float:left;margin:3px 0;padding: 0 3px;">' +
+                '   <buton class="layui-btn layui-btn-lg ' + colors[index % colors.length] + '">' + i + '</buton>' +
+                '</div>'
+            );
+            index++;
+            (function(inp,i){
+                inp.on("click",function(){
+                    parent.menu.menu = menus[i];
+                });
+            })(inp,i);
+            functions.append(inp);
+        };
+
+        for (i in page) {
+            var inp = $(
+                '<div style="float:left;margin:3px 0;padding: 0 3px;">' +
+                '   <buton onclick="pageManage.showPage(\'' + page[i] + '\')" class="layui-btn layui-btn-lg ' + colors[index % colors.length] + '">' + i + '</buton>' +
+                '</div>'
+            );
+            index++;
+            $("#page").append(inp);
+        }
+
+        for (i in action) {
+            var inp = $(
+                '<div style="float:left;margin:3px 0;padding: 0 3px;">' +
+                '   <buton class="layui-btn layui-btn-lg ' + colors[index % colors.length] + '">' + i + '</buton>' +
+                '</div>'
+            );
+            inp.on("click",action[i]);
+            index++;
+            $("#action").append(inp);
+        }
+    });
+</script>
+
+</body>
+
+</html>

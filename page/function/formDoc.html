@@ -1,0 +1,675 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>form doc</title>
+    <link rel="stylesheet" href="../../layui-221/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../js/ztree/css/metroStyle/metroStyle.css"/>
+    <!--<link rel="stylesheet" href="../../hightlight/styles/default.css"/>-->
+    <link rel="stylesheet" href="../../hightlight/styles/atom-one-dark.css"/>
+</head>
+<body>
+<fieldset><legend><a name="default">前置说明</a></legend>
+    <p>因为使用了 layui 作为主题框架，这里使用到了 layer 和 layui 的样式，
+        表单内容摒弃了 layui 中的 form.render 渲染形式，
+        使用 vue 和 layui 的样式进行定义，内容使用 vue 的 MVVM 进行交互，
+        所有的内容不定义到 DOM 中，例如表单的 input 中 name 属性不进行渲染；
+        hidden 属性的 input 不进行渲染，直接记录在内存中等等。</p>
+<div class="layui-collapse">
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">基础配置</h2>
+        <div class="layui-colla-content">
+            <div class="common scripting">
+                        <pre style="line-height: initial;">
+                            <code class="xml hljs" id="baseHTML">
+                            </code>
+                            <code class="javascript hljs" id="baseJavascript">
+                            </code>
+                        </pre>
+            </div>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">基础配置说明</h2>
+        <div class="layui-colla-content" style="overflow: scroll;">
+            <p>字段说明</p>
+            <table class="layui-table">
+                <colgroup>
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>字段/参数</th>
+                    <th>eles</th>
+                    <th>submitBtn</th>
+                    <th>verify</th>
+                    <th>formStyle</th>
+                    <th>bindMethods</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>类型</td>
+                    <td>数组</td>
+                    <td>数组</td>
+                    <td>对象</td>
+                    <td>字符串</td>
+                    <td>对象</td>
+                </tr>
+                <tr>
+                    <td>是否必要</td>
+                    <td>是</td>
+                    <td>否</td>
+                    <td>否</td>
+                    <td>否</td>
+                    <td>否</td>
+                </tr>
+                <tr>
+                    <td>说明</td>
+                    <td>表单对象说明数组</td>
+                    <td>按钮组对象说明数组</td>
+                    <td>添加验证类型</td>
+                    <td>表单对象样式描述</td>
+                    <td>绑定表单元素方法(*)</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">eles 配置说明</h2>
+        <div class="layui-colla-content" style="overflow: scroll;">
+            <p>以下 <span class="layui-badge layui-bg-green">-</span> 表示参数没有存在意义,<span class="layui-badge layui-bg-orange">*</span> 表示参数必须要存在,<span class="layui-badge layui-bg-blue">&</span> 最好配置但不强制</p>
+            <table class="layui-table">
+                <colgroup>
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>类型/参数</th>
+                    <th>hidden</th>
+                    <th>input</th>
+                    <th>password</th>
+                    <th>select</th>
+                    <th>checkbox</th>
+                    <th>radio</th>
+                    <th>switch</th>
+                    <th>textarea</th>
+                    <th>date</th>
+                    <th>tree</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>使用前提</td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td>layui 的 laydate 提供的日期插件，将该变量(laydate)设定为全局</td>
+                    <td>jQuery 对象，z-tree 插件，common.js 中定义的 sailPromise 对象</td>
+                </tr>
+                <tr>
+                    <td>说明</td>
+                    <td>隐藏信息（例如id）</td>
+                    <td>输入框</td>
+                    <td>密码输入框</td>
+                    <td>下拉选择</td>
+                    <td>复选框组</td>
+                    <td>单选按钮组</td>
+                    <td>开关</td>
+                    <td>文本域</td>
+                    <td>日期</td>
+                    <td>树</td>
+                </tr>
+                <tr>
+                    <td>name<br/>(用于获取字段)</td>
+                    <td><span class="layui-badge layui-bg-orange">*</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span></td>
+                </tr>
+                <tr>
+                    <td>verify<br/>(用于检查字段合法性)</td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                </tr>
+                <tr>
+                    <td>placeholder<br/>(提示)</td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                </tr>
+                <tr>
+                    <td>value<br/>(默认值，没有时建议为空)</td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                </tr>
+                <tr>
+                    <td>label<br/>(标签)</td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                    <td><span class="layui-badge layui-bg-blue">&</span></td>
+                </tr>
+                <tr>
+                    <td>options<br/>(选项)</td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                </tr>
+                <tr>
+                    <td>word<br/>(开关选项)</td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                </tr>
+                <tr>
+                    <td>split<br/>(分割选中项)</td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span><br/>(默认`|`)</td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                </tr>
+                <tr>
+                    <td>setting<br/>(分割选中项)</td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-green">-</span></td>
+                    <td><span class="layui-badge layui-bg-orange">*</span><br/>(相当复杂)</td>
+                </tr>
+                </tbody>
+            </table>
+            <p>字段说明</p>
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>字段</th>
+                    <th>说明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>name</td>
+                    <td><span class="layui-badge layui-bg-blue">字符串</span>，用于最后表单内容获取</td>
+                </tr>
+                <tr>
+                    <td>placeholder</td>
+                    <td><span class="layui-badge layui-bg-blue">字符串</span>，相当于 input 的 placeholder 属性</td>
+                </tr>
+                <tr>
+                    <td>value</td>
+                    <td><span class="layui-badge layui-bg-blue">字符串</span>，默认值，复选框组多个选中时用 split 指定字符分割</td>
+                </tr>
+                <tr>
+                    <td>label</td>
+                    <td><span class="layui-badge layui-bg-blue">字符串</span>，标签，为用户体验友好而存在</td>
+                </tr>
+                <tr>
+                    <td>options</td>
+                    <td><span class="layui-badge layui-bg-blue">对象(组成的)数组</span>，{ label : "" , value : ""}</td>
+                </tr>
+                <tr>
+                    <td>word</td>
+                    <td><span class="layui-badge layui-bg-blue">字符串</span>，描述开关的两个状态（开和关，使用 `|` 分割），例如 word ; "开|关"</td>
+                </tr>
+                <tr>
+                    <td>split</td>
+                    <td><span class="layui-badge layui-bg-blue">建议只有一个字符</span>，分割复选框选中的多个选项</td>
+                </tr>
+                <tr>
+                    <td>setting</td>
+                    <td><span class="layui-badge layui-bg-blue">对象</span>，仅树有</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">eles 树配置说明</h2>
+        <div class="layui-colla-content">
+            <div class="common scripting">
+                    <pre style="line-height: initial;">
+                        <code class="javascript hljs" id="baseElmTreeExample">
+                        </code>
+                    </pre>
+            </div>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">eles 示例</h2>
+        <div class="layui-colla-content">
+            <div class="common scripting">
+                    <pre style="line-height: initial;">
+                        <code class="javascript hljs" id="baseElmExample">
+                        </code>
+                    </pre>
+            </div>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">submitBtn 配置说明</h2>
+        <div class="layui-colla-content">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>字段/说明</th>
+                    <th>type</th>
+                    <th>text</th>
+                    <th>$emit</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>类型</td>
+                    <td>字符串</td>
+                    <td>字符串</td>
+                    <td>字符串</td>
+                </tr>
+                <tr>
+                    <td>说明</td>
+                    <td>只有一种类型 submit<br>该类型指定的按钮会调用<br/>bindForMethods 方法</td>
+                    <td>按钮显示的字符串<br/>支持 HTML </td>
+                    <td>当类型不是 submit 时，<br/>需要为该字段赋值，<br/>该值会调用绑定方法<br/>下方示例讲解</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">submitBtn 示例</h2>
+        <div class="layui-colla-content">
+            <div class="common scripting">
+                    <pre style="line-height: initial;">
+                        <code class="xml hljs" id="baseSubmitExampleHtml">
+                        </code>
+                        <code class="javascript hljs" id="baseSubmitExampleJs">
+                        </code>
+                    </pre>
+            </div>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">verify 配置说明(submit 方法的 verify 对象)</h2>
+        <div class="layui-colla-content">
+            <div class="common scripting">
+                <p>
+                    事先定义了若干个检验合法性接口，默认返回 false 意义的内容表示检验通过，否在返回内容为检验不通过的提示。<br/>
+                    <span class="layui-badge layui-bg-blue">require</span>判空
+                    <span class="layui-badge layui-bg-blue">phone</span>联系号码
+                    <span class="layui-badge layui-bg-blue">email</span>邮箱
+                    <span class="layui-badge layui-bg-blue">url</span>链接
+                    <span class="layui-badge layui-bg-blue">number</span>数字
+                    <span class="layui-badge layui-bg-blue">date</span>日期
+                    <span class="layui-badge layui-bg-blue">identity</span>身份证
+                </p>
+                <pre style="line-height: initial;">
+                        <code class="xml hljs" id="baseVerifyExampleHtml">
+                        </code>
+                    </pre>
+            </div>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">bindMethods 配置说明</h2>
+        <div class="layui-colla-content">
+            <div class="common scripting">
+                <p>
+                    作用：数据将可能存在某一种联系，例如身份证和出生日期和年龄将的关系，可以通过该配置进行绑定
+                </p>
+                <pre style="line-height: initial;">
+                        <code class="xml hljs" id="baseBindMethodsExampleHtml">
+                        </code>
+                    </pre>
+            </div>
+        </div>
+    </div>
+</div>
+</fieldset>
+<script src="../../js/config/child.js"></script>
+<script src="../../layui-221/layui.js"></script>
+<script src="../../js/vue/vue.js"></script>
+<script src="../../js/vue-layui/component-form.js"></script>
+<script src="../../hightlight/highlight.pack.js"></script>
+<script>
+    var laydate,
+        layer;
+    layui.use(['jquery','layer','element'], function(){
+        element = layui.element;
+        jQuery = layui.jquery;
+        layer = layui.layer;
+        jQuery("body").append('<script src="../../js/ztree/jquery.ztree.all.min.js"><\/script>');
+
+        jQuery(function() {
+            element.render();
+            //baseHTML
+            {
+                jQuery("#baseHTML").html(hljs.highlightAuto(
+'<link rel="stylesheet" src="yourPath/layui.css"><\/link>\n\
+<script src="yourPath/vue.js"><\/script>\n\
+<script src="yourPath/vue-layui/component-form.js"><\/script>\n\
+<div id="app"><layui-form ref="form"\n\
+                :eles="formEles"\n\
+                :submit-btn="submitBtn"\n\
+                :bind-methods="bindForMethods"\n\
+                @submit="submitToServer">\n\
+    </layui-form></div>'
+                ).value);
+            }
+            //baseJavascript
+            {
+                jQuery("#baseJavascript").html(hljs.highlightAuto(
+'vm = new Vue({\n\
+    el : "#app",\n\
+    data : {\n\
+        formEles : [\n\
+            {/* 后面解释 */}\n\
+        ],\n\
+        verify : {},\n\
+        submitBtn : [],\n\
+        bindForMethods : {}\n\
+    },\n\
+    methods : {\n\
+        /**\n\
+        * fields = {\n\
+        * 	"fieldName" : {\n\
+        *		value : "fieldValue",\n\
+        *		verify : "verifyName"\n\
+        * 	}\n\
+        * }\n\
+        * verify : [object 对象，所有的 verify 内容(下面解释)]\n\
+        */\n\
+        submitToServer : function(fields,verify) {}\n\
+    },\n\
+    mounted : {}\n\
+});'
+                ).value);
+            }
+            //baseElmExample
+            {
+                jQuery("#baseElmExample").html(hljs.highlightAuto(
+'[\n\
+    {\n\
+        type : "hidden",\n\
+        name : "hidden",\n\
+        value : "hidden"\n\
+    },\n\
+    {\n\
+        type : "input",\n\
+        label : "普通输入框",\n\
+        placeholder : "ibas",\n\
+        name : "input",\n\
+        value : "inp",\n\
+        verify : "require"\n\
+    },\n\
+    {\n\
+        name : "select",\n\
+        type : "select",\n\
+        label : "下拉列表",\n\
+        value : "第一",\n\
+        content : "iiiiiiiii",\n\
+        verify : "require"\n\
+        options : [\n\
+            {\n\
+                value : "第一",\n\
+                label : "iiiiiiiii"\n\
+            },\n\
+            {\n\
+                value : "第二",\n\
+                label : "jjjjjjjjj"\n\
+            }\n\
+        ]\n\
+    },\n\
+    {\n\
+        name : "switch",\n\
+        init : true,\n\
+        type : "switch",\n\
+        label : "开关",\n\
+        word : "on|off",\n\
+        value : 1\n\
+    },\n\
+    {\n\
+        name : "date",\n\
+        init : true,\n\
+        type : "date",\n\
+        label : "日期选择",\n\
+        placeholder : "",\n\
+        value : "2017-02-15",\n\
+        verify : "require"\n\
+    },\n\
+    {\n\
+        name : "tree",\n\
+        type : "tree",\n\
+        label : "树节点选择",\n\
+        setting : {\n\
+            promiseName : "deptInfo"\n\
+        }\n\
+    }\n\
+]'
+                ).value);
+            }
+            //baseSubmitExample
+            {
+                jQuery("#baseSubmitExampleHtml").html(hljs.highlightAuto(
+                    '<!-- 忽略其他参数 -->\n' +
+                    '<div id="app"><layui-form @submitonebtn="submitOne" :submit-btn="submitBtn" @submit="submitToServer"></layui-form></div>'
+                ).value);
+                jQuery("#baseSubmitExampleJs").html(hljs.highlightAuto(
+'new Vue({\n\
+    el : "#app",\n\
+    data : {\n\
+        submitBtn : [\n\
+            {\n\
+                type : "submit",\n\
+                text : "submit 按钮"\n\
+            },\n\
+            {\n\
+                //type : "submit",\n\
+                text : "submitOne 方法的按钮",\n\
+                $emit : "submitonebtn"\n\
+            }\n\
+        ]\n\
+    },\n\
+    method : {\n\
+        submitOne : function($child) { \n\
+            /* $child 自己部件的 (vue) this 对象 */ \n\
+        },\n\
+        /**\n\
+        * fields = {\n\
+        * 	"fieldName" : {\n\
+        *		value : "fieldValue",//用户输入或选中的内容\n\
+        *		verify : "verifyName"//可以从 verify 对象中匹配检验方法\n\
+        * 	}\n\
+        * }\n\
+        * verify : [object 对象，所有的 verify 内容(下面解释)]\n\
+        * 在该过程中检验数据需要用户自己实现\n\
+        * 这里仅仅将数据和检验方法全部返回给用户\n\
+        */\n\
+        submitToServer : function(fields,verify) {}\n\
+    }\n\
+});'
+                ).value);
+            }
+            //baseVerifyExampleHtml
+            {
+                jQuery("#baseVerifyExampleHtml").html(hljs.highlightAuto(
+'{/*发送事件中获取到的 verify 将是默认的 检验方法和这里定义的检验方法*/\n\
+    "v1" : function(value,verify) {\n\
+        //判断逻辑\n\
+        //verify 可以调用到 verify 本身定义的检验方法\n\
+        //以及这里定义的检验函数\n\
+        //verify.v1、verify.v2、verify.identity\n\
+        //return verify.v2(value,verify);\n\
+        if (true) {\n\
+            return "";\n\
+        } else {\n\
+            return "错误信息";\n\
+        }\n\
+    },\n\
+    "v2" : function(){}\n\
+}'
+                ).value);
+            }
+            //baseBindMethodsExampleHtml
+            {
+                jQuery("#baseBindMethodsExampleHtml").html(hljs.highlightAuto(
+'ele = [\n\
+    {\n\
+        name : "age",\n\
+        type : "input"\n\
+    },\n\
+    {\n\
+        name : "idcard",\n\
+        type : "input"\n\
+    },\n\
+    {\n\
+        name : "birthday",\n\
+        type : "input"\n\
+    }\n\
+]\n\
+//这里仅仅实现从身份证到出生日期和年龄的单向绑定\n\
+bandForMethods = {\n\
+    "idcard" : [\n\
+        {\n\
+            name : "birthday",\n\
+            dear : function(idcard) {\n\
+                return idcard.substring(6,14);\n\
+            }\n\
+        },\n\
+        {\n\
+            name : "age",\n\
+            dear : function(idcard) {\n\
+                return (new Dear()).getYear() + 1900 - parseInt(idcard.substring(6,10));\n\
+            }\n\
+        }\n\
+    ]\n\
+}'
+                ).value);
+            }
+            //baseElmTreeExample
+            {
+                jQuery("#baseElmTreeExample").html(
+                    hljs.highlightAuto(
+'// setting : {\n\
+//      divSetting : {  //显示目录结构的 div 设置\n\
+//          style : "margin:0;"\n\
+//      },\n\
+//      treeSetting : {    //数据级别设置\n\
+//			//该配置为 z-tree 配置\n\
+//      }\n\
+//      layerSetting : {    //layer 设置\n\
+//			//这里使用了 layer 弹层来显示树目录，\n\
+//			//避开设置 type 和 content 属性\n\
+//      }\n\
+//      promiseName : "promiseOne",//统一使用 sailPromise 进行数据初始化和传递\n\
+//      //过滤方法，通过抛出异常表示数据不合理，错误信息会以提示抛出到 UI 界面送给用户\n\
+//	   //这里使用了 z-tree 的 getSelectedNodes 方法，获取选中内容，作为 nodes 进行传递\n\
+//      filterSelect : function(nodes) {\n\
+//          if (nodes.length > 10) {\n\
+//              throw "选中条目超过 10 条";\n\
+//          } else {\n\
+//              return [{\n\
+//                  value : "",\n\
+//                  content : ""\n\
+//              }];\n\
+//          }\n\
+//      }\n\
+// }\n\
+// sailPromise 定义在 common.js 文件中，查看源码上方的 demodoc\n\
+// 这里简单的使用一下\n\
+//sailPromise.getPromise 的第二个参数和 $.ajax 参数无异但是不需要定义 success 函数\n\
+sailPromise\n\
+    .getPromise("proA",{url : "",header : {},data : {}})\n\
+    .dearFn = function(ret){\n\
+        //ret 为 $.ajax 请求返回数据\n\
+        //这里可以对原始数据进行处理，处理为符合 z-tree 格式的对象\n\
+        return ret;\n\
+    };'
+                    ).value
+                );
+            }
+        });
+        //各种基于事件的操作，下面会有进一步介绍
+    });
+</script>
+</body>
+</html>

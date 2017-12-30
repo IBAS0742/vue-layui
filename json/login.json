@@ -1,0 +1,15 @@
+{
+    "currentRoleList": [
+        {
+            "roleId": 9,
+            "name": "小白"
+        },
+        {
+            "roleId": 1,
+            "name": "小红"
+        }
+    ],
+    "code": 0,
+    "expire": "缓存时间长度",
+    "token": "333cc0b407fdb4370c4ad31249a26170"
+}

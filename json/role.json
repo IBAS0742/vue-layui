@@ -1,0 +1,101 @@
+[
+  {
+    "id": 1,
+    "parentId": 0,
+    "name": "清扫项目",
+    "parentName": null,
+    "orderNum": 0,
+    "open": null,
+    "list": null
+  },
+  {
+    "id": 6,
+    "parentId": 1,
+    "name": "管理人员",
+    "parentName": "清扫项目",
+    "orderNum": 0,
+    "open": null,
+    "list": null
+  },
+  {
+    "id": 8,
+    "parentId": 1,
+    "name": "项目成员",
+    "parentName": "清扫项目",
+    "orderNum": 0,
+    "open": null,
+    "list": null
+  },
+  {
+    "id": 9,
+    "parentId": 6,
+    "name": "项目经理",
+    "parentName": "管理人员",
+    "orderNum": 0,
+    "open": null,
+    "list": null
+  },
+  {
+    "id": 10,
+    "parentId": 6,
+    "name": "项目主管",
+    "parentName": "管理人员",
+    "orderNum": 0,
+    "open": null,
+    "list": null
+  },
+  {
+    "id": 11,
+    "parentId": 6,
+    "name": "文员",
+    "parentName": "管理人员",
+    "orderNum": 0,
+    "open": null,
+    "list": null
+  },
+  {
+    "id": 12,
+    "parentId": 6,
+    "name": "项目组长",
+    "parentName": "管理人员",
+    "orderNum": 0,
+    "open": null,
+    "list": null
+  },
+  {
+    "id": 13,
+    "parentId": 6,
+    "name": "项目领班",
+    "parentName": "管理人员",
+    "orderNum": 0,
+    "open": null,
+    "list": null
+  },
+  {
+    "id": 14,
+    "parentId": 8,
+    "name": "一线清洁工",
+    "parentName": "项目成员",
+    "orderNum": 0,
+    "open": null,
+    "list": null
+  },
+  {
+    "id": 15,
+    "parentId": 8,
+    "name": "机械作业部",
+    "parentName": "项目成员",
+    "orderNum": 0,
+    "open": null,
+    "list": null
+  },
+  {
+    "id": 16,
+    "parentId": 8,
+    "name": "其他成员",
+    "parentName": "项目成员",
+    "orderNum": 0,
+    "open": null,
+    "list": null
+  }
+]

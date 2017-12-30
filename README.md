@@ -1,4 +1,4 @@
-# vue-layer
+# vue-layui
 [demo](http://vue-layui.halahala.cn/)
 
 

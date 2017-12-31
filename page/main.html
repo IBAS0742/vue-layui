@@ -75,6 +75,12 @@
                 "proxy-usage",{
                     content : "https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy"
                 },1,true
+            ],
+            [
+                //装载 proxy 页面信息
+                "Github",{
+                    content : "https://github.com/IBAS0742/vue-layui"
+                },1,true
             ]
         ]);
     var openTab = function () {
@@ -284,6 +290,9 @@
                 type : 2,
                 content : "../images/fileStruct.jpg"
             })
+        },
+        "Github 地址" : function () {
+            pageManage.showPage("Github");
         }
     };
     window.layer = {

@@ -13,6 +13,14 @@ var loginUserInfo = [
         label : "密码",
         verify : "required",
         placeholder : "密码"
+    },
+    {
+        name : "yan",
+        type : "yan",
+        verify : "required",
+        value : "",
+        src : "",
+        $emit : "changecode"
     }
 ];
 var layerId;
@@ -46,6 +54,7 @@ layui.use(['table','jquery','layer'], function(){
     layerId = 0;
     jq = layui.jquery;
     layer = layui.layer;
+
     layer.config({
         skin: 'layui-layer-molv'
     });
@@ -77,7 +86,8 @@ layui.use(['table','jquery','layer'], function(){
                         return "手机号或身份证不能为空";
                     }
                 }
-            }
+            },
+            code : ""
         },
         methods : {
             submitToServer : function (fields,verify) {
@@ -85,6 +95,11 @@ layui.use(['table','jquery','layer'], function(){
                 console.log(fields);
                 var msg = "",
                     data;
+                if (fields.yan.value !== "1111" && fields.yan.value !== this.code) {
+                    this.newCode();
+                    layer.msg("验证码错误");
+                    return;
+                }
                 for(var i in fields) {
                     msg = verify[fields[i].verify](fields[i].value,verify);
                     if (msg) {
@@ -132,9 +147,15 @@ layui.use(['table','jquery','layer'], function(){
                     shadeClose : false,
                     closeBtn : false
                 });
+            },
+            newCode : function () {
+                var ret = Mock.image();
+                loginUserInfo[2].src = ret.src.toDataURL();
+                this.code = ret.str.toLocaleLowerCase();
             }
         },
         mounted : function () {
+            this.newCode();
         }
     });
 
@@ -287,21 +308,4 @@ layui.use(['table','jquery','layer'], function(){
             closeBtn : false
         });
     }
-
-    setTimeout(function () {
-        parent.layer.msg("随意 11 位数字的手机号和随意字符密码即可登陆。",{time : 5000});
-    },1000);
-
-    jq("#main").on("click",function () {
-        var $this = this;
-        this.style.display = "none";
-        layer.open({
-            type : 2,
-            content : "../../images/main.png",
-            area : ['100%','100%'],
-            cancel : function () {
-                $this.style.display = "block";
-            }
-        })
-    });
 });

@@ -44,7 +44,8 @@ window.mainStore = new Vuex.Store({
             // }
         ],
         menus : [],
-        showMenu : ""
+        showMenu : "close",
+        minWidth : 787
     },
     mutations: {
     }
@@ -57,15 +58,15 @@ var layui_prex = "layui";
  * */
 Vue.component(layui_prex + "vuelayermain",{
     template :
-        '<!-- 主体 -->\
-        <div ref="main" class="layui-layout layui-layout-admin showMenu">\
-            <!-- 顶部 -->\
-            <div class="layui-header header">\
-                <div class="layui-main">\
-                    <!-- logo -->\
-                    <a style="background-color: #404040;" href="#" class="logo" v-html="logo"></a>\
-                    <!-- 顶部菜单项 -->\
-                    <' + layui_prex + 'lefttopmenu v-for="(tm,ind) in lefttopmenu" :key="ind" :menu="tm"></' + layui_prex + 'lefttopmenu>\
+    '<!-- 主体 -->\
+    <div ref="main" class="layui-layout layui-layout-admin showMenu">\
+        <!-- 顶部 -->\
+        <div class="layui-header header">\
+            <div class="layui-main">\
+                <!-- logo -->\
+                <a v-if="logoShow" style="background-color: #404040;" href="#" class="logo" v-html="logo"></a>\
+                <!-- 顶部菜单项 -->\
+                <' + layui_prex + 'lefttopmenu v-for="(tm,ind) in lefttopmenu" :key="ind" :menu="tm"></' + layui_prex + 'lefttopmenu>\
                     <!-- 顶部右侧菜单 -->\
                     <ul class="layui-nav top_menu">\
                         <' + layui_prex + 'righttopmenu v-for="(tm,ind) in righttopmenu" :key="ind" :menu="tm"></' + layui_prex + 'righttopmenu>\
@@ -73,7 +74,7 @@ Vue.component(layui_prex + "vuelayermain",{
                 </div>\
             </div>\
             <!-- 左侧导航 -->\
-            <div class="layui-side layui-bg-black">\
+            <div :style="fixBack" class="layui-side layui-bg-black">\
                 <div class="navBar layui-side-scroll">\
                     <ul class="layui-nav layui-nav-tree" lay-filter="menus">\
                         <' + layui_prex + 'leftmenu v-for="(menu,ind) in menus" :key="ind" :menu="menu" @openurl="openurl"></' + layui_prex + 'leftmenu>\
@@ -81,7 +82,7 @@ Vue.component(layui_prex + "vuelayermain",{
                 </div>\
             </div>\
             <!-- 右侧内容 -->\
-            <div class="layui-body layui-form">\
+            <div :style="fixWidth" class="layui-body layui-form">\
                 <div class="layui-tab marg0" lay-filter="bodyTab" id="top_tabs_box">\
                     <!-- 打开项 -->\
                     <ul ref="openTabUL" \
@@ -129,7 +130,7 @@ Vue.component(layui_prex + "vuelayermain",{
                 </div>\
             </div>\
             <!-- 底部 -->\
-            <div class="layui-footer footer" v-html="bottomHTML"></div>\
+            <div :style="fixWidth" class="layui-footer footer" v-html="bottomHTML"></div>\
         </div>',
     data : function () {
         return {
@@ -144,7 +145,15 @@ Vue.component(layui_prex + "vuelayermain",{
                 canDrag : false,
                 tmpTabLeft : -1
             },
-            menuShow : false
+            menuShow : false,
+            fixWidth : {
+                left : "0px"
+            },
+            fixBack : {
+                "background-color" : "#393D49"
+            },
+            logoShow : true,
+            bodyWidth : 0
         }
     },
     computed : {
@@ -182,7 +191,7 @@ Vue.component(layui_prex + "vuelayermain",{
                 case "close" :
                     return "close";
                 default :
-                    return "";
+                    return "close";
             }
         }
     },
@@ -358,6 +367,23 @@ Vue.component(layui_prex + "vuelayermain",{
                 this.tabInfo.curTabLeft = this.tabInfo.tmpTabLeft;
                 this.tabInfo.tmpTabLeft = -1;
             }
+        },
+        toggleMenu : function (val) {
+            var left = "0px";
+            if (val == "open") {
+                if (this.bodyWidth > mainStore.state.minWidth) {
+                    left = "200px";
+                }
+                this.$refs.main.classList.remove("showMenu");
+            } else if (val == "close") {
+                this.$refs.main.classList.remove("showMenu");
+                this.$refs.main.classList.add("showMenu");
+            } else {
+                mainStore.state.showMenu = "close";
+            }
+            this.fixWidth = {
+                "left" : left
+            };
         }
     },
     mounted : function () {
@@ -373,27 +399,62 @@ Vue.component(layui_prex + "vuelayermain",{
                 maxmin : true
             });
         });
+        window.onresize_ = window.onresize;
+        if (window.onresize_ instanceof Function) {} else {
+            window.onresize_ = function () {};
+        }
+        var $this = this;
+        window.onresize = function () {
+            window.onresize_();
+            $this.bodyWidth = document.body.clientWidth;
+        };
+        this.bodyWidth = document.body.clientWidth;
     },
     watch : {
         menus : function () {
             setTimeout(function () {
                 element.render();
             },100);
-            if (!this.menuShow) {
-                this.menuShow = true;
-                this.$refs.main.classList.remove("showMenu");
+            if (this.showMenu !== "open") {
+                mainStore.state.showMenu = "open";
+                this.toggleMenu("open");
             }
         },
         showMenu : function (val,oldVal) {
-            if (val == "open") {
-                this.$refs.main.classList.remove("showMenu");
-            } else if (val == "close") {
-                this.$refs.main.classList.remove("showMenu");
-                this.$refs.main.classList.add("showMenu");
-            } else {
-                this.$refs.main.classList.remove("showMenu");
-                this.$refs.main.classList.add("showMenu");
+            if (oldVal == val) {
+                return ;
             }
+            this.toggleMenu(val);
+        },
+        bodyWidth : function (val,oldVal) {
+            if (oldVal == val) {
+                return ;
+            }
+            if (val < mainStore.state.minWidth) {
+                this.fixWidth = {
+                    left : "0px"
+                };
+                this.fixBack["background-color"] = "rgba(0, 0, 0, 0.77) !important";
+                this.logoShow = false;
+            } else {
+                this.logoShow = true;
+                this.fixBack["background-color"] = "#393D49";
+                if (this.showMenu == "open") {
+                    this.fixWidth = {
+                        left : "200px"
+                    };
+                } else {
+                    this.fixWidth = {
+                        left : "0px"
+                    };
+                }
+            }
+        },
+        fixWidth : function (val,oldVal) {
+            console.log(val);
+            setTimeout(function () {
+                this.checkTabUlLeft();
+            }.bind(this),300);
         }
     }
 });
@@ -429,18 +490,18 @@ Vue.component(layui_prex + "righttopmenu",{
  * */
 Vue.component(layui_prex + 'tabtitle',{
     template :
-            '<li :lay-id="tabTitle.id" @click="active">' +
-            '   <i v-html="html"></i>' +
-            '   <i v-if="this.index != 0" @click.stop="close" class="layui-icon layui-unselect layui-tab-close">ဆ</i>' +
-            '</li>',
+    '<li :lay-id="tabTitle.id" @click="active">' +
+    '   <i v-html="html"></i>' +
+    '   <i v-if="this.index != 0" @click.stop="close" class="layui-icon layui-unselect layui-tab-close">ဆ</i>' +
+    '</li>',
     props : ['tabTitle','index'],
     computed : {
         html : function() {
             var tabTitle = this.tabTitle;
             return (
-                    (tabTitle.iconHtml || "") +
-                    ' <cite>'+ tabTitle.name + '</cite>'
-                );
+                (tabTitle.iconHtml || "") +
+                ' <cite>'+ tabTitle.name + '</cite>'
+            );
         }
     },
     methods : {
@@ -459,9 +520,9 @@ Vue.component(layui_prex + 'tabtitle',{
  * */
 Vue.component(layui_prex + 'tabFrame',{
     template :
-        '<div class="layui-tab-item">' +
-        '   <iframe :src="tf.url"></iframe>' +
-        '</div>',
+    '<div class="layui-tab-item">' +
+    '   <iframe :src="tf.url"></iframe>' +
+    '</div>',
     props : ['tf']
 });
 
@@ -496,12 +557,15 @@ Vue.component(layui_prex + 'leftmenu',{
     props : ['menu'],
     computed : {
         title : function () {
-            return ((this.menu.iconHtml + "&nbsp;&nbsp;") || "") + "<span>" + this.menu.title + "</span>"
+            return ((this.menu.iconHtml) || '') + "&nbsp;&nbsp;<span>" + this.menu.title + "</span>"
         }
     },
     methods : {
         openUrl : function (menu) {
             this.$emit("openurl",menu);
+            if (document.body.clientWidth < mainStore.state.minWidth) {
+                mainStore.state.showMenu = "close";
+            }
         }
     }
 });

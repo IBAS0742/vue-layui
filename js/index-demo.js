@@ -204,10 +204,12 @@ layui.use(['form','element','layer',"jquery"],function() {
                 {
                     iconHtml : "<i class='layui-icon'>&#xe65f;</i>",
                     event : function () {
-                        if (mainStore.state.showMenu == "open")
+                        if (mainStore.state.showMenu == "open") {
                             mainStore.state.showMenu = "close";
-                        else
+                        }
+                        else {
                             mainStore.state.showMenu = "open";
+                        }
                     }
                 }
             ];

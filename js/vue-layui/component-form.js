@@ -13,7 +13,7 @@
  * 使用方法
  *
  *      <layui-form :eles="eles" :verify="verify" @submit="submitToServer" :submit-btn="submitBtn" @test="ptest"></layui-form>
-        new Vue({
+ new Vue({
             el : '#app',
             data : {
                 eles : [
@@ -93,6 +93,7 @@ Vue.component("layuiForm",{
                 <layui-textarea     v-else-if="ele.type==\'textarea\'"      :ele="ele"></layui-textarea>\
                 <layui-date         v-else-if="ele.type==\'date\'"           :ele="ele"></layui-date>\
                 <layui-tree         v-else-if="ele.type==\'tree\'"           :ele="ele"></layui-tree>\
+                <layui-yan         v-else-if="ele.type==\'yan\'"           :ele="ele"></layui-yan>\
                 <div v-else v-html="ele.html"></div>\
             </div>\
             <div v-if="submitBtn" class="layui-form-item"><div class="layui-input-block">\
@@ -212,8 +213,10 @@ Vue.component("layuiForm",{
                 }
             }
         },
-        submitBtnClick : function (ind) {
-            if (this.submitBtn[ind].type == "submit") {
+        submitBtnClick : function (ind,$emit) {
+            if (ind < 0 && $emit) {
+                this.$emit($emit,this);
+            } else if (this.submitBtn[ind].type == "submit") {
                 this.submit();
             } else {
                 var $emit = this.submitBtn[ind].$emit;
@@ -948,12 +951,36 @@ Vue.component('layuiTree', {
                     //this.content.push(ret[i].content);
 
                     //for (var i = 0;i < this.content.length;i++) {
-                        htmlStr += '<button class="layui-btn layui-btn-primary layui-btn-sm" style="min-width: 100px;">' + ret[i].content + '</button>'
+                    htmlStr += '<button class="layui-btn layui-btn-primary layui-btn-sm" style="min-width: 100px;">' + ret[i].content + '</button>'
                     //}
                 }
                 this.$refs.selectList.innerHTML = htmlStr;
                 this.change();
             }
+        }
+    }
+});
+/**
+ *
+ * */
+Vue.component("layuiYan",{
+    template :
+        '<div>\
+            <label class="layui-form-label">验证码</label>\
+            <div class="layui-input-block">\
+                <input class="layui-input" \
+                    placeholder="验证码" \
+                    type="text" v-model="ele.value" \
+                    style="float: left;width: calc(100% - 116px);">\
+                <div class="code" style="float: left;">\
+                    <img @click="changeValue" :src="ele.src" width="116" height="38">\
+                </div>\
+            </div>\
+        </div>',
+    props : ['ele'],
+    methods : {
+        changeValue : function () {
+            this.$parent.submitBtnClick(-1,this.ele.$emit);
         }
     }
 });

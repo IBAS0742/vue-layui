@@ -45,7 +45,10 @@ window.mainStore = new Vuex.Store({
         ],
         menus : [],
         showMenu : "close",
-        minWidth : 787
+        //使用响应式手机端的最大宽度
+        minWidth : 787,
+        //菜单宽度
+        menuWidth : 200
     },
     mutations: {
     }
@@ -59,7 +62,7 @@ var layui_prex = "layui";
 Vue.component(layui_prex + "vuelayermain",{
     template :
     '<!-- 主体 -->\
-    <div ref="main" class="layui-layout layui-layout-admin showMenu">\
+    <div ref="main" class="layui-layout layui-layout-admin">\
         <!-- 顶部 -->\
         <div class="layui-header header">\
             <div class="layui-main">\
@@ -74,9 +77,9 @@ Vue.component(layui_prex + "vuelayermain",{
                 </div>\
             </div>\
             <!-- 左侧导航 -->\
-            <div :style="fixBack" class="layui-side layui-bg-black">\
-                <div class="navBar layui-side-scroll">\
-                    <ul class="layui-nav layui-nav-tree" lay-filter="menus">\
+            <div ref="menu" class="layui-side">\
+                <div style="width:calc(100% + 20px);overflow-x: hidden;height: 100%;" class="navBar ">\
+                    <ul class="layui-nav layui-nav-tree" style="width:calc(100% - 20px);" lay-filter="menus">\
                         <' + layui_prex + 'leftmenu v-for="(menu,ind) in menus" :key="ind" :menu="menu" @openurl="openurl"></' + layui_prex + 'leftmenu>\
                     </ul>\
                 </div>\
@@ -149,9 +152,6 @@ Vue.component(layui_prex + "vuelayermain",{
             fixWidth : {
                 left : "0px"
             },
-            fixBack : {
-                "background-color" : "#393D49"
-            },
             logoShow : true,
             bodyWidth : 0
         }
@@ -193,6 +193,9 @@ Vue.component(layui_prex + "vuelayermain",{
                 default :
                     return "close";
             }
+        },
+        menuWidth : function () {
+            return mainStore.state.menuWidth;
         }
     },
     methods : {
@@ -371,14 +374,17 @@ Vue.component(layui_prex + "vuelayermain",{
         toggleMenu : function (val) {
             var left = "0px";
             if (val == "open") {
+                this.$refs.menu.style.left = "0px";
                 if (this.bodyWidth > mainStore.state.minWidth) {
-                    left = "200px";
+                    left = this.menuWidth + "px";
                 }
                 this.$refs.main.classList.remove("showMenu");
             } else if (val == "close") {
+                this.$refs.menu.style.left = "-" + this.menuWidth + "px";
                 this.$refs.main.classList.remove("showMenu");
                 this.$refs.main.classList.add("showMenu");
             } else {
+                this.$refs.menu.style.left = "-" + this.menuWidth + "px";
                 mainStore.state.showMenu = "close";
             }
             this.fixWidth = {
@@ -390,6 +396,7 @@ Vue.component(layui_prex + "vuelayermain",{
         setTimeout(function () {
             element.tabChange('bodyTab',"first");
         },200);
+        this.toggleMenu();
         $('[data-url]').on('click',function () {
             var url = this.getAttribute("data-url");
             layer.open({
@@ -409,6 +416,7 @@ Vue.component(layui_prex + "vuelayermain",{
             $this.bodyWidth = document.body.clientWidth;
         };
         this.bodyWidth = document.body.clientWidth;
+        this.$refs.menu.style.width = this.menuWidth + "px";
     },
     watch : {
         menus : function () {
@@ -434,14 +442,14 @@ Vue.component(layui_prex + "vuelayermain",{
                 this.fixWidth = {
                     left : "0px"
                 };
-                this.fixBack["background-color"] = "rgba(0, 0, 0, 0.77) !important";
+                this.$refs.menu.style.backgroundColor = "rgba(0, 0, 0, 0.77)";
                 this.logoShow = false;
             } else {
                 this.logoShow = true;
-                this.fixBack["background-color"] = "#393D49";
+                this.$refs.menu.style.backgroundColor = "#393D49";
                 if (this.showMenu == "open") {
                     this.fixWidth = {
-                        left : "200px"
+                        left : this.menuWidth + "px"
                     };
                 } else {
                     this.fixWidth = {
@@ -451,10 +459,13 @@ Vue.component(layui_prex + "vuelayermain",{
             }
         },
         fixWidth : function (val,oldVal) {
-            console.log(val);
             setTimeout(function () {
                 this.checkTabUlLeft();
             }.bind(this),300);
+        },
+        menuWidth : function () {
+            this.toggleMenu(this.showMenu);
+            this.$refs.menu.style.width = this.menuWidth + "px";
         }
     }
 });

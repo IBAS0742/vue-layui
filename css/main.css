@@ -9,11 +9,25 @@
 .layui-layer-dialog .layui-layer-content .layui-layer-ico16{ background-size:100% 100% !important; }
 
 /*样式改变的过渡*/
-.showMenu .layui-body,.showMenu .layui-footer,.showMenu.layui-layout-admin .layui-side,.logo,.top_menu .layui-nav-item[pc],.component,.top_menu .layui-nav-item[mobile],.layui-nav,.layui-layout-admin .layui-main,.site-mobile .layui-side,.layui-layout-admin .layui-side,.site-mobile .site-tree-mobile,.layui-body,.layui-layout-admin .layui-footer,.layui-layout-admin .layui-side,.panel,.panel .panel_icon i{ transition: all 0.3s ease-in-out;-webkit-transition: all 0.3s ease-in-out;-o-transition: all 0.3s ease-in-out;-moz-transition: all 0.3s ease-in-out;-ms-transition: all 0.3s ease-in-out; }
+.layui-body,
+.layui-footer,
+.logo,.top_menu .layui-nav-item[pc],
+.component,.top_menu .layui-nav-item[mobile],
+.layui-nav,
+.layui-layout-admin .layui-main,
+.site-mobile .layui-side,
+.layui-layout-admin .layui-side,
+.site-mobile .site-tree-mobile,
+.layui-layout-admin .layui-footer,
+.layui-layout-admin .layui-side,
+.panel,.panel .panel_icon i {
+	transition: all 0.3s ease-in-out;
+	-webkit-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+}
 
-
-.showMenu.layui-layout-admin .layui-side{ left:-200px; }
-.showMenu .layui-body,.showMenu .layui-footer{ left:0; }
 .layui-layout-admin .layui-main{ margin:0; }
 .logo{ color: #fff; float: left; line-height:60px; font-size:20px; padding:0 25px; text-align: center; width:150px;}
 .leftTopMenu{ float:left; width:20px; height:20px; margin:15px 15px 0 0; font-size:17px; text-align:center; padding:5px 5px; color:#fff; background-color:#1AA094; }
@@ -39,7 +53,6 @@
 
 /*左侧用户头像*/
 .layui-nav{ background-color:inherit !important; }
-.layui-layout-admin .layui-side{ left:0; }
 .user-photo{width: 200px; height: 120px; padding-top: 15px; padding-bottom: 5px;}
 .user-photo a.img{ display: block; width: 76px; height: 76px; margin: 0 auto; margin-bottom: 15px;}
 .user-photo a.img img{ display: block; border: none; width: 100%; height: 100%; border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; border: 4px solid #44576b;}

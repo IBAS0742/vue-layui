@@ -368,9 +368,9 @@ Vue.component('layuiSelect',{
         change : function (value) {
             var label = "";
             if (value) {
-                for (var i = 0;i < this.ele.length;i++) {
-                    if (this.ele[i].value == value) {
-                        label = this.ele[i].label;
+                for (var i = 0;i < this.ele.options.length;i++) {
+                    if (this.ele.options[i].value == value) {
+                        label = this.ele.options[i].label;
                         break;
                     }
                 }

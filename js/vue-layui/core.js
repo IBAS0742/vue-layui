@@ -451,10 +451,10 @@ Vue.component(layui_prex + "vuelayermain",{
             setTimeout(function () {
                 element.render();
             },100);
-            if (this.showMenu !== "open") {
-                mainStore.state.showMenu = "open";
-                this.toggleMenu("open");
-            }
+            // if (this.showMenu !== "open") {
+            //     mainStore.state.showMenu = "open";
+            //     this.toggleMenu("open");
+            // }
         },
         showMenu : function (val,oldVal) {
             if (oldVal == val) {

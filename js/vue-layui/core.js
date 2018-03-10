@@ -48,7 +48,10 @@ window.mainStore = new Vuex.Store({
         //使用响应式手机端的最大宽度
         minWidth : 787,
         //菜单宽度
-        menuWidth : 200
+        menuWidth : 200,
+        hideTop : false,
+        hideBottom : false,
+        windowsAction : []
     },
     mutations: {
     }
@@ -64,7 +67,7 @@ Vue.component(layui_prex + "vuelayermain",{
     '<!-- 主体 -->\
     <div ref="main" class="layui-layout layui-layout-admin">\
         <!-- 顶部 -->\
-        <div class="layui-header header">\
+        <div ref="top" class="layui-header header">\
             <div class="layui-main">\
                 <!-- logo -->\
                 <a v-if="logoShow" style="background-color: #404040;" href="#" class="logo" v-html="logo"></a>\
@@ -85,7 +88,7 @@ Vue.component(layui_prex + "vuelayermain",{
                 </div>\
             </div>\
             <!-- 右侧内容 -->\
-            <div :style="fixWidth" class="layui-body layui-form">\
+            <div ref="right" :style="fixWidth" class="layui-body layui-form">\
                 <div class="layui-tab marg0" lay-filter="bodyTab" id="top_tabs_box">\
                     <!-- 打开项 -->\
                     <ul ref="openTabUL" \
@@ -108,20 +111,8 @@ Vue.component(layui_prex + "vuelayermain",{
                         <li class="layui-nav-item">\
                             <a href="javascript:;"><i class="iconfont icon-caozuo"></i>{{pageOPName}}</a>\
                             <dl class="layui-nav-child ibasNav">\
-                                <dd @click="closeAllTab">\
-                                    <a href="javascript:;">\
-                                        <i class="layui-icon">&#x1002;</i> 关闭所有\
-                                     </a>\
-                                </dd>\
-                                <dd @click="closeOthers">\
-                                    <a href="javascript:;">\
-                                        <i class="iconfont icon-prohibit"></i> 关闭其他\
-                                     </a>\
-                                </dd>\
-                                <dd @click="refleshTab">\
-                                    <a href="javascript:;">\
-                                        <i class="layui-icon">&#x1002;</i> 刷新当前\
-                                     </a>\
+                                <dd v-for="(wa,ind) in windowsAction" :key="ind" @click="invokAction(wa.event)">\
+                                    <a href="javascript:;" v-html="wa.html"></a>\
                                 </dd>\
                             </dl>\
                         </li>\
@@ -133,7 +124,7 @@ Vue.component(layui_prex + "vuelayermain",{
                 </div>\
             </div>\
             <!-- 底部 -->\
-            <div :style="fixWidth" class="layui-footer footer" v-html="bottomHTML"></div>\
+            <div ref="footer" :style="fixWidth" class="layui-footer footer" v-html="bottomHTML"></div>\
         </div>',
     data : function () {
         return {
@@ -196,6 +187,15 @@ Vue.component(layui_prex + "vuelayermain",{
         },
         menuWidth : function () {
             return mainStore.state.menuWidth;
+        },
+        hideTop : function () {
+            return mainStore.state.hideTop;
+        },
+        hideBottom : function () {
+            return mainStore.state.hideBottom;
+        },
+        windowsAction : function () {
+            return mainStore.state.windowsAction;
         }
     },
     methods : {
@@ -373,6 +373,14 @@ Vue.component(layui_prex + "vuelayermain",{
         },
         toggleMenu : function (val) {
             var left = "0px";
+            if (!val) {
+                if (this.showMenu == "open") {
+                    mainStore.state.showMenu = "close";
+                } else {
+                    mainStore.state.showMenu = "open";
+                }
+                return ;
+            }
             if (val == "open") {
                 this.$refs.menu.style.left = "0px";
                 if (this.bodyWidth > mainStore.state.minWidth) {
@@ -390,6 +398,26 @@ Vue.component(layui_prex + "vuelayermain",{
             this.fixWidth = {
                 "left" : left
             };
+        },
+        toggleTop : function () {
+            this.$refs.top.style.display = this.hideTop ? "none" : "block";
+            this.$refs.menu.style.top =
+                this.$refs.right.style.top =
+                    this.hideTop ? "0" : "60px";
+        },
+        toggleBottom : function () {
+            this.$refs.footer.style.display = this.hideBottom ? "none" : "block";
+            this.$refs.right.style.bottom =
+                this.hideBottom ? "0" : "44px";
+        },
+        invokAction : function (args) {
+            if (args[0] == "self") {
+                this[args[1]]();
+            } else if (args[0] == "$emit") {
+                this.$emit(args[1],this);
+            } else {
+                console.log("nothing for action");
+            }
         }
     },
     mounted : function () {
@@ -466,6 +494,12 @@ Vue.component(layui_prex + "vuelayermain",{
         menuWidth : function () {
             this.toggleMenu(this.showMenu);
             this.$refs.menu.style.width = this.menuWidth + "px";
+        },
+        hideTop : function () {
+            this.toggleTop();
+        },
+        hideBottom : function () {
+            this.toggleBottom();
         }
     }
 });
@@ -568,7 +602,7 @@ Vue.component(layui_prex + 'leftmenu',{
     props : ['menu'],
     computed : {
         title : function () {
-            return ((this.menu.iconHtml) || '') + "&nbsp;&nbsp;<span>" + this.menu.title + "</span>"
+            return ((this.menu.iconHtml) || '') + "&nbsp;&nbsp;<span>" + this.menu.title + "</span>";
         }
     },
     methods : {

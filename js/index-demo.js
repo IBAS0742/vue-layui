@@ -249,6 +249,20 @@ layui.use(['form','element','layer',"jquery"],function() {
                     id : 'first'
                 }
             ];
+            mainStore.state.windowsAction = [
+                {
+                    html : '<i class="layui-icon">&#x1007;</i> 关闭所有',
+                    event : ['self','closeAllTab']
+                },
+                {
+                    html : '<i class="iconfont">&#x1006;</i> 关闭其他',
+                    event : ['self','closeOthers']
+                },
+                {
+                    html : '<i class="layui-icon">&#x1002;</i> 刷新当前',
+                    event : ['self','refleshTab']
+                }
+            ];
         }
     };
 

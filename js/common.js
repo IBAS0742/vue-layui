@@ -819,10 +819,14 @@ var sailPromise = (function(ajax) {
     };
 });
 
+
 /**
  * 创建一个 ajax 代理对象
+ * $ 不管是什么东西，只要存在 $.ajax 即可
+ * baseUrl 请求基础路径
+ * cor 是否跨域
  * */
-var $AjaxProxy = (function ($,baseUrl) {
+var $AjaxProxy = (function ($,baseUrl,cor) {
     var ajax_ = $.ajax.bind($);
     var ajaxParams = [];
     var ajaxParamsNames = [];
@@ -844,6 +848,7 @@ var $AjaxProxy = (function ($,baseUrl) {
                     obj.headers["content-type"] = "application/x-www-form-urlencoded; charset=UTF-8";
                     break;
                 case 'join':
+                    //todo 连接方法有可能是有一定顺序的
                     for (var i in obj.data) {
                         obj.url += obj.data[i];
                         break;
@@ -859,13 +864,43 @@ var $AjaxProxy = (function ($,baseUrl) {
             //return obj;
         }
     };
-    $.ajax = new Proxy($.ajax,{
-        apply: function(target, that, args) {
-            args = args[0];
+    if (window["Proxy"] !== undefined) {
+        $.ajax = new Proxy($.ajax,{
+            apply: function(target, that, args) {
+                args = args[0];
+                var param = {};
+                if ("name" in args && ajaxParamsNames.includes(args['name'])) {
+                    param = ajaxParams[ajaxParamsNames.indexOf(args['name'])];
+                } else if ("url" in args && ajaxParamsUrls.includes(args['url'])) {
+                    param = ajaxParamsUrls[ajaxParamsNames.indexOf(args['url'])];
+                }
+                for (var i in param) {
+                    if (i == "others") {
+                        for (var j in param[i]) {
+                            param[i][j](args);
+                        }
+                    } else {
+                        if (i in defaultDear) {
+                            defaultDear[i](args,param[i]);
+                        }
+                    }
+                }
+                if (cor) {
+                    args.xhrFields = {
+                        withCredentials:true
+                    };
+                }
+                console.log(args);
+                target.apply($,[args]);
+            }
+        });
+    } else {
+        $.ajax_ = $.ajax;
+        $.ajax = function (args) {
             var param = {};
-            if ("name" in args && ajaxParamsNames.includes(args['name'])) {
+            if ("name" in args && (ajaxParamsNames.indexOf(args['name']) + 1)) {
                 param = ajaxParams[ajaxParamsNames.indexOf(args['name'])];
-            } else if ("url" in args && ajaxParamsUrls.includes(args['url'])) {
+            } else if ("url" in args && (ajaxParamsUrls.indexOf(args['url']) + 1)) {
                 param = ajaxParamsUrls[ajaxParamsNames.indexOf(args['url'])];
             }
             for (var i in param) {
@@ -877,10 +912,15 @@ var $AjaxProxy = (function ($,baseUrl) {
                     defaultDear[i](args,param[i]);
                 }
             }
+            if (cor) {
+                args.xhrFields = {
+                    withCredentials:true
+                };
+            }
             console.log(args);
-            target.apply($,[args]);
+            $.ajax_(args);
         }
-    });
+    }
     window.$AjaxProxy = {
         sets : function (objArr) {
             var $this = this;

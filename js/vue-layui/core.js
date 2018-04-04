@@ -445,6 +445,8 @@ Vue.component(layui_prex + "vuelayermain",{
         };
         this.bodyWidth = document.body.clientWidth;
         this.$refs.menu.style.width = this.menuWidth + "px";
+        this.toggleBottom();
+        this.toggleTop();
     },
     watch : {
         menus : function () {

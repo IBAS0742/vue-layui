@@ -12,6 +12,7 @@ window.mainStore = new Vuex.Store({
         lefttopmenu : [
             // {
             //     iconHtml : "<i class='iconfont icon-menu1'></i>",
+            //     title : "second",
             //     click : function () {
             //         console.log("fe");
             //     }
@@ -20,12 +21,12 @@ window.mainStore = new Vuex.Store({
         righttopmenu : [
             // {
             //     iconHtml : "<i class='iconfont icon-shezhi1'></i>",
-            //     text : "second",
+            //     title : "second",
             //     url : "page/user/userInfo.html" //弃用
             // },
             // {
             //     iconHtml : "<i class='iconfont icon-shezhi1'></i>",
-            //     text : "third",
+            //     title : "third",
             //     click : function () {
             //         console.log("fe");
             //     }
@@ -39,7 +40,7 @@ window.mainStore = new Vuex.Store({
         tabTitles : [
             // {
             //     iconHtml: "<i :class=\"indexIcon\"></i>",
-            //     name: "窗口",
+            //     title: "窗口",
             //     id : 'first'
             // }
         ],
@@ -507,7 +508,7 @@ Vue.component(layui_prex + "vuelayermain",{
 });
 
 Vue.component(layui_prex + "lefttopmenu",{
-    template : '<a href="javascript:;" style="margin-left: 0.5em;" class="leftTopMenu" @click="invoke()" v-html="menu.iconHtml"></a>',
+    template : '<a href="javascript:;" style="margin-left: 0.5em;" class="leftTopMenu" @click="invoke()" v-html="iconhtml"></a>',
     props : ['menu'],
     computed : {
         mid : function () {
@@ -516,13 +517,19 @@ Vue.component(layui_prex + "lefttopmenu",{
             } else {
                 return 'lefttopmenu_' + (new Date()).getTime();
             }
+        },
+        iconhtml : function () {
+            if (this.menu.title) {} else {
+                this.menu.title = "";
+            }
+            return this.menu.iconHtml + this.menu.title;
         }
     },
     methods : {
         invoke : function () {
             if (typeof this.menu.click == 'function') {
                 this.menu.click();
-            } else if (typeof this.menu.url == 'string') {
+            } else {
                 menu.id = this.mid;
                 this.$emit("openurl",menu);
                 if (document.body.clientWidth < mainStore.state.minWidth) {
@@ -542,7 +549,7 @@ Vue.component(layui_prex + "righttopmenu",{
     props : ['menu'],
     computed : {
         content : function () {
-            return this.menu.iconHtml + '<cite>' + this.menu.text + '</cite>'
+            return this.menu.iconHtml + '<cite>' + this.menu.title + '</cite>'
         },
         mid : function () {
             if (this.menu.id) {
@@ -556,7 +563,7 @@ Vue.component(layui_prex + "righttopmenu",{
         invoke : function () {
             if (typeof this.menu.click == 'function') {
                 this.menu.click();
-            } else if (typeof this.menu.url == 'string') {
+            } else {
                 menu.id = this.mid;
                 this.$emit("openurl",menu);
                 if (document.body.clientWidth < mainStore.state.minWidth) {
@@ -587,7 +594,7 @@ Vue.component(layui_prex + 'tabtitle',{
             var tabTitle = this.tabTitle;
             return (
                 (tabTitle.iconHtml || "") +
-                ' <cite>'+ tabTitle.name + '</cite>'
+                ' <cite>'+ tabTitle.title + '</cite>'
             );
         }
     },
@@ -645,18 +652,10 @@ Vue.component(layui_prex + 'leftmenu',{
     computed : {
         title : function () {
             return ((this.menu.iconHtml) || '') + "&nbsp;&nbsp;<span>" + this.menu.title + "</span>";
-        },
-        mid : function () {
-            if (this.menu.id) {
-                return this.menu.id;
-            } else {
-                return 'leftmenu_' + (new Date()).getTime();
-            }
         }
     },
     methods : {
         openUrl : function (menu) {
-            menu.id = this.mid;
             this.$emit("openurl",menu);
             if (document.body.clientWidth < mainStore.state.minWidth) {
                 mainStore.state.showMenu = "close";

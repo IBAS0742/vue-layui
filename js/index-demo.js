@@ -216,21 +216,21 @@ layui.use(['form','element','layer',"jquery"],function() {
             mainStore.state.righttopmenu = [
                 {
                     iconHtml : "<i class=\"iconfont icon-gonggao\"></i>",
-                    text : "日历",
+                    title : "日历",
                     click : function () {
                         layer.msg("。。。进行中");
                     }
                 },
                 {
                     iconHtml : "<i class=\"iconfont icon-gonggao\"></i>",
-                    text : "记事本",
+                    title : "记事本",
                     click : function () {
                         pageManage.showPage("note");
                     }
                 },
                 {
                     iconHtml : "<i class=\"iconfont icon-gonggao\"></i>",
-                    text : "登出",
+                    title : "登出",
                     click : function () {
                         userInfoCacheProxy.token = "";
                         location.reload();
@@ -245,7 +245,7 @@ layui.use(['form','element','layer',"jquery"],function() {
             mainStore.state.tabTitles = [
                 {
                     iconHtml: "<i class='layui-icon'>&#xe857;</i>",
-                    name: "主页",
+                    title: "主页",
                     id : 'first'
                 }
             ];

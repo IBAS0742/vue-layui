@@ -203,7 +203,7 @@ layui.use(['form','element','layer',"jquery"],function() {
             mainStore.state.lefttopmenu = [
                 {
                     iconHtml : "<i class='layui-icon'>&#xe65f;</i>",
-                    event : function () {
+                    click : function () {
                         if (mainStore.state.showMenu == "open") {
                             mainStore.state.showMenu = "close";
                         }

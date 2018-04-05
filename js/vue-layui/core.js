@@ -12,7 +12,7 @@ window.mainStore = new Vuex.Store({
         lefttopmenu : [
             // {
             //     iconHtml : "<i class='iconfont icon-menu1'></i>",
-            //     event : function () {
+            //     click : function () {
             //         console.log("fe");
             //     }
             // }
@@ -507,22 +507,62 @@ Vue.component(layui_prex + "vuelayermain",{
 });
 
 Vue.component(layui_prex + "lefttopmenu",{
-    template : '<a href="javascript:;" style="margin-left: 0.5em;" class="leftTopMenu" @click="menu.event" v-html="menu.iconHtml"></a>',
+    template : '<a href="javascript:;" style="margin-left: 0.5em;" class="leftTopMenu" @click="invoke()" v-html="menu.iconHtml"></a>',
     props : ['menu'],
     computed : {
+        mid : function () {
+            if (this.menu.id) {
+                return this.menu.id;
+            } else {
+                return 'lefttopmenu_' + (new Date()).getTime();
+            }
+        }
+    },
+    methods : {
+        invoke : function () {
+            if (typeof this.menu.click == 'function') {
+                this.menu.click();
+            } else if (typeof this.menu.url == 'string') {
+                menu.id = this.mid;
+                this.$emit("openurl",menu);
+                if (document.body.clientWidth < mainStore.state.minWidth) {
+                    mainStore.state.showMenu = "close";
+                }
+            }
+        }
     }
 });
 
 Vue.component(layui_prex + "righttopmenu",{
     template :
         '<li class="layui-nav-item">\
-            <a href="javascript:;" @click="menu.click" v-html="content">\
+            <a href="javascript:;" @click="invoke()" v-html="content">\
             </a>\
         </li>',
     props : ['menu'],
     computed : {
         content : function () {
             return this.menu.iconHtml + '<cite>' + this.menu.text + '</cite>'
+        },
+        mid : function () {
+            if (this.menu.id) {
+                return this.menu.id;
+            } else {
+                return 'righttopmenu_' + (new Date()).getTime();
+            }
+        }
+    },
+    methods : {
+        invoke : function () {
+            if (typeof this.menu.click == 'function') {
+                this.menu.click();
+            } else if (typeof this.menu.url == 'string') {
+                menu.id = this.mid;
+                this.$emit("openurl",menu);
+                if (document.body.clientWidth < mainStore.state.minWidth) {
+                    mainStore.state.showMenu = "close";
+                }
+            }
         }
     }
 });
@@ -605,10 +645,18 @@ Vue.component(layui_prex + 'leftmenu',{
     computed : {
         title : function () {
             return ((this.menu.iconHtml) || '') + "&nbsp;&nbsp;<span>" + this.menu.title + "</span>";
+        },
+        mid : function () {
+            if (this.menu.id) {
+                return this.menu.id;
+            } else {
+                return 'leftmenu_' + (new Date()).getTime();
+            }
         }
     },
     methods : {
         openUrl : function (menu) {
+            menu.id = this.mid;
             this.$emit("openurl",menu);
             if (document.body.clientWidth < mainStore.state.minWidth) {
                 mainStore.state.showMenu = "close";

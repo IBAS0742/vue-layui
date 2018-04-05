@@ -239,7 +239,7 @@ layui.use(['form','element','layer',"jquery"],function() {
             ];
             mainStore.state.tabFrame = [
                 {
-                    url : "page/main.html"
+                    href : "page/main.html"
                 }
             ];
             mainStore.state.tabTitles = [

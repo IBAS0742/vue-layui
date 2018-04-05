@@ -22,7 +22,7 @@ window.mainStore = new Vuex.Store({
             // {
             //     iconHtml : "<i class='iconfont icon-shezhi1'></i>",
             //     title : "second",
-            //     url : "page/user/userInfo.html" //弃用
+            //     href : "page/user/userInfo.html" //弃用
             // },
             // {
             //     iconHtml : "<i class='iconfont icon-shezhi1'></i>",
@@ -34,7 +34,7 @@ window.mainStore = new Vuex.Store({
         ],
         tabFrame : [
             // {
-            //     url : "page/office/office.html"
+            //     href : "page/office/office.html"
             // }
         ],
         tabTitles : [
@@ -329,11 +329,11 @@ Vue.component(layui_prex + "vuelayermain",{
                 this.curTab = this.tabFrame.length;
                 this.tabTitles.push({
                     iconHtml: menu.iconHtml,
-                    name: menu.title,
+                    title: menu.title,
                     id : menu.id
                 });
                 this.tabFrame.push({
-                    url : menu.href
+                    href : menu.href
                 });
                 var $this = this;
                 setTimeout(function () {
@@ -615,7 +615,7 @@ Vue.component(layui_prex + 'tabtitle',{
 Vue.component(layui_prex + 'tabFrame',{
     template :
     '<div class="layui-tab-item">' +
-    '   <iframe :src="tf.url"></iframe>' +
+    '   <iframe :src="tf.href"></iframe>' +
     '</div>',
     props : ['tf']
 });

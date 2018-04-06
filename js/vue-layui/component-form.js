@@ -426,70 +426,67 @@ Vue.component('layuiCheckbox', {
         '<div>\
             <label class="layui-form-label" v-html="ele.label"></label>\
             <div class="layui-input-block">\
-                <div  v-for="(op,ind) in options"\
-                    ref="tar"\
-                    target="target" @click.stop="change(ind)" \
-                    class="layui-unselect layui-form-checkbox" :lay-skin="ele.skin">\
+                <div  v-for="(op,ind) in ele.options"\
+                    target="target" \
+                    @click.stop="change(ind)" \
+                    :class="(op.checked?\'layui-form-checked\':\'\') + \' layui-unselect layui-form-checkbox\'" \
+                    :lay-skin="ele.skin">\
                     <span >{{op.label}}</span>\
                     <i class="layui-icon"></i>\
                 </div>\
             </div>\
         </div>',
     props: ['ele'],
-    computed : {
-        options : function () {
-            var op = [];
-            var ops = this.ele.options;
-            var split = this.ele.split || "|";
-            var vals = [];
-            if (this.ele.value) {
-                vals = this.ele.value.split("|");
-            }
-            for (var i = 0;i < ops.length;i++) {
-                if (vals.includes(ops[i].value)) {
-                    op.push(Object.assign({check : true},ops[i]));
-                } else {
-                    op.push(Object.assign({check : false},ops[i]));
-                }
-            }
-            return op;
+    data : function () {
+        return {
+            select : [],
+            select_ : false
         }
     },
     methods : {
         change : function (ind) {
-            var $e = this.$refs.tar[ind],
-                option = this.options[ind],
-                value = option.value,
-                check = !option.check;
-            this.options[ind].check = check;
-            if (check) {
-                $e.classList.add("layui-form-checked");
-            } else {
-                $e.classList.remove("layui-form-checked");
-            }
             var split = this.ele.split || "|";
-            this.$parent.valueChange(this.ele.name,value,function (out,split,oldV,newV) {
-                if (out) {
-                    return oldV + split + newV;
+            this.ele.options[ind].checked = !this.ele.options[ind].checked;
+            if (this.ele.options[ind].checked) {
+                this.select.push(this.ele.options[ind].value);
+            } else {
+                this.select.splice(this.select.indexOf(this.ele.options[ind].value),1);
+            }
+            this.select_ = true;
+            this.ele.value = this.select.join(split);
+            this.$parent.valueChange(this.ele.name,this.ele.value);
+        },
+        initOptions : function () {
+            var v = [],
+                split = this.ele.split || "|",
+                vals = [];
+            if (this.ele.value) {
+                vals = this.ele.value.split(split);
+            }
+            this.select = [];
+            this.ele.options.forEach(function (op,ind) {
+                if (vals.indexOf(op.value) + 1) {
+                    op.checked = true;
+                    v.push(op.value);
+                    this.select.push(op.value);
                 } else {
-                    return oldV.split(split).filter(function (t) {
-                        return t != newV;
-                    }).join(split);
+                    op.checked = false;
                 }
-            }.bind(null,check,split));
+            }.bind(this));
+            this.$parent.valueChange(this.ele.name,this.ele.value,null);
         }
     },
     mounted : function () {
-        var tars = this.$refs.tar,
-            v = [],
-            split = this.ele.split || "|";
-        for (var i = 0;i < this.options.length;i++) {
-            if (this.options[i].check) {
-                tars[i].classList.add("layui-form-checked");
-                v.push(this.options[i].value);
+        this.initOptions();
+    },
+    watch : {
+        'ele.value' : function (val) {
+            if (this.select_) {
+                this.select_ = false;
+            } else {
+                this.initOptions();
             }
         }
-        this.$parent.valueChange(this.ele.name,v.join(split),null);
     }
 });
 /**
@@ -508,10 +505,11 @@ Vue.component('layuiRadio', {
         '<div>\
             <label class="layui-form-label" v-html="ele.label"></label>\
             <div class="layui-input-block">\
-                <div  v-for="(op,ind) in options"\
-                    ref="tar"\
-                    target="target" @click.stop="change(ind)" \
-                    class="layui-unselect layui-form-radio">\
+                <div  v-for="(op,ind) in ele.options"\
+                    :style="\'box-shadow:\' + (op.checked?\'0px 2px #60b879\':\'none\')" \
+                    target="target" \
+                    @click.stop="change(ind)" \
+                    :class="(op.checked?\'layui-form-radioed\':\'\')+\' layui-unselect layui-form-radio\'">\
                     <i class="layui-anim layui-icon layui-anim-scaleSpring"></i>\
                     <div style="font-size: 14px;">{{op.label}}</div>\
                 </div>\
@@ -520,60 +518,49 @@ Vue.component('layuiRadio', {
     props: ['ele'],
     data : function () {
         return {
-            select : -1
-        }
-    },
-    computed : {
-        options : function () {
-            var op = [],
-                val = this.ele.value || "";
-            for (var i = 0;i < this.ele.options.length;i++) {
-                if (val == this.ele.options[i].value) {
-                    op.push(Object.assign({check : true},this.ele.options[i]));
-                } else {
-                    op.push(Object.assign({check : false},this.ele.options[i]));
-                }
+            select : -1,
+            checked : {
             }
-            return op;
         }
     },
     methods : {
         change : function (ind) {
-            var $e = this.$refs.tar[ind],
-                option = this.options[ind],
-                value = option.value,
-                check = !option.check;
-            this.options[ind].check = check;
-            if (ind == this.select) {
-                return;
-            } else {
-                if (this.select == -1) {
-                } else {
-                    this.options[this.select].check = false;
-                    this.$refs.tar[this.select].classList.remove("layui-form-radioed");
-                    this.$refs.tar[this.select].style.boxShadow = "none";
-                }
-                this.select = ind;
-                $e.classList.add("layui-form-radioed");
-                $e.style.boxShadow = "0px 2px #60b879";
+            if (this.select + 1) {
+                this.ele.options[this.select].checked = false;
             }
-            this.$parent.valueChange(this.ele.name,value);
+            if (this.select == ind) {
+                return;
+            }
+            this.select = ind;
+            this.ele.options[ind].checked = true;
+            this.$parent.valueChange(this.ele.name,this.ele.options[ind].value);
         }
     },
     mounted : function () {
-        var tars = this.$refs.tar,
-            $this = this;
-        this.options.forEach(function (op,ind) {
-            if (op.check) {
-                tars[ind].classList.add("layui-form-radioed");
-                tars[ind].style.boxShadow = "0px 2px #60b879";
-                $this.select = ind;
-                $this.$parent.valueChange($this.ele.name,op.value);
-                return false;
-            } else {
-                return true;
+        var val = this.ele.value;
+        this.ele.options.forEach(function (op,ind) {
+            if (op.value == val) {
+                this.select = ind;
             }
-        });
+            op.checked = false;
+        }.bind(this));
+        if (this.select + 1) {
+            this.ele.options[this.select].checked = true;
+        }
+    },
+    watch : {
+        'ele.value' : function (val) {
+            var index = -1;
+            this.ele.options.forEach(function (op,ind) {
+                if (op.value == val) {
+                    index = ind;
+                }
+                op.checked = false;
+            }.bind(this));
+            if (index + 1) {
+                this.change(index);
+            }
+        }
     }
 });
 /**

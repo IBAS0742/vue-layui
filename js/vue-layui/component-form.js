@@ -520,7 +520,8 @@ Vue.component('layuiRadio', {
         return {
             select : -1,
             checked : {
-            }
+            },
+            select_ : false
         }
     },
     methods : {
@@ -533,6 +534,8 @@ Vue.component('layuiRadio', {
             }
             this.select = ind;
             this.ele.options[ind].checked = true;
+            this.select_ = this.ele.value != this.ele.options[ind].value;
+            this.ele.value = this.ele.options[ind].value;
             this.$parent.valueChange(this.ele.name,this.ele.options[ind].value);
         }
     },
@@ -550,15 +553,19 @@ Vue.component('layuiRadio', {
     },
     watch : {
         'ele.value' : function (val) {
-            var index = -1;
-            this.ele.options.forEach(function (op,ind) {
-                if (op.value == val) {
-                    index = ind;
+            if (this.select_) {
+                this.select_ = false;
+            } else {
+                var index = -1;
+                this.ele.options.forEach(function (op,ind) {
+                    if (op.value == val) {
+                        index = ind;
+                    }
+                    op.checked = false;
+                }.bind(this));
+                if (index + 1) {
+                    this.change(index);
                 }
-                op.checked = false;
-            }.bind(this));
-            if (index + 1) {
-                this.change(index);
             }
         }
     }

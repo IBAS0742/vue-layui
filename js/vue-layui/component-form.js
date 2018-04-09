@@ -132,16 +132,24 @@ Vue.component("layuiForm",{
         return {
             dVerify : {
                 _verify_ : function (fields,verify) {
-                    var err = "";
-                    fields.every(function (field) {
-                        if (field.verify && field.verify in verify) {
-                            err = verify[field.verify](field.value,verify);
-                            return !err;
-                        } else {
-                            return true;
+                    if (fields instanceof Array) {
+                        var err = "";
+                        fields.every(function (field) {
+                            if (field.verify && field.verify in verify) {
+                                err = verify[field.verify](field.value,verify);
+                                return !err;
+                            } else {
+                                return true;
+                            }
+                        });
+                        return err;
+                    } else {
+                        var fields_ = [];
+                        for (var i in fields) {
+                            fields_.push(fields[i]);
                         }
-                    });
-                    return err;
+                        return verify._verify_(fields_,verify);
+                    }
                 },
                 required: function(value){
                     if(!/[\S]+/.test(value)) return '必填项不能为空';
@@ -526,11 +534,11 @@ Vue.component('layuiRadio', {
     },
     methods : {
         change : function (ind) {
-            if (this.select + 1) {
-                this.ele.options[this.select].checked = false;
-            }
             if (this.select == ind) {
                 return;
+            }
+            if (this.select + 1) {
+                this.ele.options[this.select].checked = false;
             }
             this.select = ind;
             this.ele.options[ind].checked = true;
@@ -549,6 +557,8 @@ Vue.component('layuiRadio', {
         }.bind(this));
         if (this.select + 1) {
             this.ele.options[this.select].checked = true;
+        } else {
+            this.select = -1;
         }
     },
     watch : {
@@ -565,6 +575,8 @@ Vue.component('layuiRadio', {
                 }.bind(this));
                 if (index + 1) {
                     this.change(index);
+                } else {
+                    this.select = -1;
                 }
             }
         }
@@ -642,7 +654,7 @@ Vue.component('layuiTextarea', {
         '<div>\
             <label class="layui-form-label" v-html="ele.label"></label>\
             <div class="layui-input-block">\
-                <textarea @change="change" v-model="value" :placeholder="ele.placeholder" class="layui-textarea"></textarea>\
+                <textarea @change="change" v-model="ele.value" :placeholder="ele.placeholder" class="layui-textarea"></textarea>\
             </div>\
         </div>',
     props: ['ele'],

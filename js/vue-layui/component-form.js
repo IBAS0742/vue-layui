@@ -990,3 +990,46 @@ Vue.component("layuiYan",{
         }
     }
 });
+/**
+ * */
+Vue.component('layuiFile',{
+    template :
+        '<div>\
+            <label class="layui-form-label"></label>\
+            <button type="button" class="layui-btn" id="test1">\
+                <i class="layui-icon"></i>上传文件\
+            </button>\
+            <div ref="inpDiv">\
+                <input type="file">\
+            </div>\
+        <div></div>\
+    </div>',
+    props : {
+        url : {
+            type : String,
+            require : true
+        }
+    },
+    data : function () {
+        return {
+            files : [
+                {
+                    name : '',
+                    show : true
+                }
+            ]
+        };
+    },
+    methods : {
+        initInput : function () {
+            this.id = 'vue-layer-file-' + (new Date()).getTime();
+            this.inp = '<input type="file" id="' + this.id + '"/>';
+            this.$refs.inpDiv.getElementsByTagName('input').onchange = function () {
+                console.log('input');
+            }.bind(this);
+        }
+    },
+    mounted : function () {
+        this.initInput();
+    }
+});

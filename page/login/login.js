@@ -5,14 +5,16 @@ var loginUserInfo = [
         type : "input",
         label : "身份证/手机号",
         verify : "phoneOrIdentity",
-        placeholder : "身份证或手机号"
+        placeholder : "身份证或手机号",
+		value : "12345678901"
     },
     {
         name : "password",
         type : "password",
         label : "密码",
         verify : "required",
-        placeholder : "密码"
+        placeholder : "密码",
+		value : "123456"
     },
     {
         name : "yan",
@@ -152,6 +154,7 @@ layui.use(['table','jquery','layer'], function(){
                 var ret = Mock.image();
                 loginUserInfo[2].src = ret.src.toDataURL();
                 this.code = ret.str.toLocaleLowerCase();
+				this.userInfo[2].value = this.code;
             }
         },
         mounted : function () {

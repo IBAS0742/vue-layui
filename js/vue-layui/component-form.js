@@ -78,10 +78,17 @@ bindMethods = {
     ]
 };
 */
+/**
+ * 文档管理有点混乱，在 http://www.sunibas.cn/views/back/child_views/configure.html 中，使用到了该脚本
+ * 脚本链接为： http://www.sunibas.cn/js/vue-layui/component-form.js
+ * 但是脚本中的 layuiForm 包含一个名为 baseJson 的 Props ，但是在该脚本中，该 属性 被合并到了 arrayJson 组件中
+ * 因为该属性是 arrayJson 特有的
+ * */
 
 Vue.component("layuiForm",{
     template :
         '<div class="layui-form">\
+            <slot name="beforeInps"></slot>\
             <div :ref="ele.type" class="layui-form-item" :style="formStyle" v-for="(ele,ind) in eles" :key="ind">\
                 <div                 v-if="ele.type==\'hidden\'"              style="display: none;"></div>\
                 <layui-input        v-else-if="ele.type==\'input\'"          :ele="ele"></layui-input>\
@@ -94,11 +101,14 @@ Vue.component("layuiForm",{
                 <layui-date         v-else-if="ele.type==\'date\'"           :ele="ele"></layui-date>\
                 <layui-tree         v-else-if="ele.type==\'tree\'"           :ele="ele"></layui-tree>\
                 <layui-yan         v-else-if="ele.type==\'yan\'"           :ele="ele"></layui-yan>\
+                <array-json         v-else-if="ele.type==\'arrayJson\'"           :ele="ele" :base-json="ele.baseJson"></array-json>\
                 <div v-else v-html="ele.html"></div>\
             </div>\
+            <slot name="beforeBtn"></slot>\
             <div v-if="submitBtn" class="layui-form-item"><div class="layui-input-block">\
                 <button class="layui-btn" v-for="(btn,ind) in submitBtn" :key="ind" @click.stop="submitBtnClick(ind)" v-html="btn.text"></button>\
             </div></div>\
+            <slot name="afterBtn"></slot>\
         </div>',
     //props : ['eles','verify','submitBtn'],
     props : {
@@ -544,7 +554,7 @@ Vue.component('layuiRadio', {
             this.ele.options[ind].checked = true;
             this.select_ = this.ele.value != this.ele.options[ind].value;
             this.ele.value = this.ele.options[ind].value;
-            this.$parent.valueChange(this.ele.name,this.ele.options[ind].value);
+            (this.$parent.valueChange || function () {})(this.ele.name,this.ele.options[ind].value);
         }
     },
     mounted : function () {
@@ -1033,3 +1043,120 @@ Vue.component('layuiFile',{
         this.initInput();
     }
 });
+/**
+ * 数组对象编辑器
+ * */
+Vue.component("arrayJson",{
+    template :
+        '<div>\
+            <json-edit v-for="(d,ind) in dat" :obj="d" :ind="ind" :key="ind"></json-edit>\
+            <div style="box-shadow:1px 1px 3px 0px black;margin-bottom:0.5em;">\
+                <div style="padding: 0.5em;">\
+                    <button class="layui-btn layui-btn-normal" style="width: 100%;" @click="create()">添加</button>\
+                </div>\
+            </div>\
+        </div>',
+    props : {
+        'ele' : {
+            require : true,
+            type : Object
+        },
+        'baseJson' : {
+            type : Object,
+            require : true
+        }
+    },
+    data : function() {
+        return {
+            dat : []
+        }
+    },
+    methods : {
+        changeValue : function (ind,key,value) {
+            this.dat[ind][key] = value;
+            this.$parent.valueChange(this.ele.name,this.dat);
+        },
+        remove : function (ind) {
+            this.dat.splice(ind,1);
+            this.$parent.valueChange(this.ele.name,this.dat);
+        },
+        create : function () {
+            var bj = {};
+            for (var i in this.baseJson) {
+                bj[i] = "";
+            }
+            this.dat.push(bj);
+        }
+    },
+    watch : {
+        'ele.value' : function () {
+            var dat = [];
+            if (this.ele.value instanceof Array) {
+                this.ele.value.forEach(function (obj) {
+                    var obj_ = {};
+                    for (var i in this.baseJson) {
+                        obj_[i] = obj[i] || "";
+                    }
+                    dat.push(obj_);
+                }.bind(this));
+            }
+            this.dat = dat;
+        }
+    }
+});
+/**
+ * 对象编辑器
+ * */
+Vue.component("jsonEdit",{
+    template :
+        '<div style="box-shadow:1px 1px 3px 0px black;margin-bottom:0.5em;">\
+            <layui-input style="padding:0.5em;" v-for="(f,ind_) in fields" :ele="f" :key="ind_"></layui-input>\
+            <div style="padding: 0.5em;">\
+                <button class="layui-btn layui-btn-danger" style="width: 100%;" @click="remove()">删除</button>\
+            </div>\
+        </div>',
+    props : {
+        obj : {
+            require : true,
+            type : Object
+        },
+        ind : {
+            require : true,
+            type : Number
+        }
+    },
+    computed : {
+        fields : function () {
+            var fields = [];
+            for (var i in this.obj) {
+                fields.push({
+                    type : "input",
+                    label : i,
+                    placeholder : i,
+                    name : i,
+                    value : this.obj[i]
+                });
+            }
+            return fields;
+        }
+    },
+    methods : {
+        valueChange : function (name,value) {
+            this.fields.forEach(function (obj) {
+                let val = '';
+                try {
+                    val = JSON.parse(obj.value);
+                } catch (e) {
+                    val = obj.value;
+                } finally {
+                    this.$parent.changeValue(this.ind,obj.name,val);
+                }
+            }.bind(this));
+        },
+        remove : function () {
+            this.$parent.remove(this.ind);
+        }
+    }
+});
+
+

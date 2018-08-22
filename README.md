@@ -11,4 +11,6 @@
     <source id="mp4" src="./video/usage.mp4" type="video/mp4">
 </video>
 
+- 配置 表单项 地址 [http://www.sunibas.cn/files/vue-layui/page/function/editLayerVueAttr.html](http://www.sunibas.cn/files/vue-layui/page/function/editLayerVueAttr.html)
+
 ![](./video/usage.gif)

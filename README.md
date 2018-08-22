@@ -6,3 +6,9 @@
 
 #### 最近在编码另一个项目，这个项目本来会有一个使用工具，但是时间不足一直没有进行，最近正在编写工具
 [工具](https://github.com/IBAS0742/rewrite_project/tree/master/vue-electron)
+
+<video id="video" controls="" preload="true“>
+    <source id="mp4" src="./video/usage.mp4" type="video/mp4">
+</video>
+
+![](./video/usage.gif)

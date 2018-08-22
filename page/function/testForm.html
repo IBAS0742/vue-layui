@@ -1,0 +1,275 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>form小例子</title>
+    <link rel="stylesheet" href="../../layui-221/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../js/ztree/css/metroStyle/metroStyle.css"/>
+    <!--<link rel="stylesheet" href="../../hightlight/styles/default.css"/>-->
+</head>
+<body>
+<div id="app" style="padding: 0.2em;">
+    <layui-form style="margin-top:0.5em;" ref="form" :eles="eles"
+                :verify="verify"
+                @submit="submitToServer"
+                :submit-btn="submitBtn"
+                :bind-methods="bindForMethods"
+                @otherone="otherOne">
+    </layui-form>
+</div>
+<div style="display: none;" id="test">
+    <form class="layui-form" >
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">文本域</label>
+            <div class="layui-input-block">
+                <textarea id="testText" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+    </form>
+    <button onclick="setTestText()" style="width: calc(100% - 20px);margin: 0.2em 10px;" class="layui-btn">立即提交</button>
+</div>
+<script src="../../js/config/child.js"></script>
+<script src="../../layui-221/layui.js"></script>
+<script src="../../js/vue/vue.js"></script>
+<script src="../../js/vue-layui/component-form.js"></script>
+<!--<script src="../../hightlight/languages/javascript.js"></script>-->
+<script>
+    var laydate,
+        layer_;
+    var setTestText = function() {
+        var t = jQuery("#testText").val();
+        try {
+            t = JSON.parse(t);
+            if (t instanceof Array) {
+                vm.eles = t;
+            }
+        } catch (e) {
+            layer.msg(e.toString(), {
+                icon:2,
+                time: 4000 //2秒关闭（如果不配置，默认是3秒）
+            }, function(){
+            });
+            console.log(e);
+        }
+    };
+    var ele = [
+        {
+            "type": "hidden",
+            "name": "hidden",
+            "value": "hidden"
+        },
+        {
+            "type": "input",
+            "label": "普通输入框",
+            "placeholder": "ibas",
+            "name": "input",
+            "value": "inp",
+            "style": {
+                "width": "49%",
+                "margin-right": "1%",
+                "display": "inline-block"
+            }
+        },
+        {
+            "label": "密码输入框",
+            "name": "password",
+            "type": "password",
+            "value": "pas",
+            "style": {
+                "width": "49%",
+                "margin-right": "1%",
+                "float": "right",
+                "display": "inline-block"
+            }
+        },
+        {
+            "name": "select",
+            "type": "select",
+            "label": "下拉列表",
+            "value": "第一",
+            "content": "iiiiiiiii",
+            "options": [
+                {
+                    "value": "第一",
+                    "label": "iiiiiiiii"
+                },
+                {
+                    "value": "第二",
+                    "label": "jjjjjjjjj"
+                },
+                {
+                    "value": "第三",
+                    "label": "kkkkkkkkk"
+                },
+                {
+                    "value": "第四",
+                    "label": "lllllllll"
+                }
+            ],
+            "style": {
+                "width": "49%",
+                "margin-right": "1%",
+                "display": "inline-block"
+            }
+        },
+        {
+            "name": "checkbox",
+            "init": true,
+            "type": "checkbox",
+            "label": "复选框组",
+            "skin": "primary",
+            "value": "ibas|yEfi",
+            "options": [
+                {
+                    "label": "第一",
+                    "value": "ibas",
+                    "checked": false
+                },
+                {
+                    "label": "第二",
+                    "value": "bing",
+                    "checked": false
+                },
+                {
+                    "label": "第三",
+                    "value": "sun",
+                    "checked": false
+                },
+                {
+                    "label": "第四",
+                    "value": "yEfi",
+                    "checked": false
+                }
+            ],
+            "style": {
+                "width": "49%",
+                "margin-right": "1%",
+                "float": "right",
+                "display": "inline-block"
+            }
+        },
+        {
+            "name": "rasdio",
+            "init": true,
+            "type": "radio",
+            "label": "单选框组",
+            "skin": "primary",
+            "value": "",
+            "options": [
+                {
+                    "label": "第一",
+                    "value": "ibas",
+                    "checked": false
+                },
+                {
+                    "label": "第二",
+                    "value": "bing",
+                    "checked": false
+                }
+            ]
+        },
+        {
+            "name": "switch",
+            "init": true,
+            "type": "switch",
+            "label": "开关",
+            "word": "off|on",
+            "value": 1
+        },
+        {
+            "name": "textarea",
+            "init": true,
+            "type": "textarea",
+            "label": "文本输入框",
+            "placeholder": "",
+            "value": "ibnadfawefawefawefawefaw"
+        },
+        {
+            "name": "date",
+            "init": true,
+            "type": "date",
+            "label": "日期选择",
+            "placeholder": "",
+            "value": "2017-02-15"
+        },
+        {
+            "html": "<div class=\"layui-input-block\" style=\"font-weight: bold;\">该日期控件绑定了 input password textarea 内容</div>"
+        },
+        {
+            "name": "tree",
+            "type": "tree",
+            "label": "树节点选择",
+            "setting": {
+                "promiseName": "deptInfo"
+            }
+        }
+    ];
+    layui.use(['laydate','jquery','layer','element'], function(){
+        laydate = layui.laydate;
+        element = layui.element;
+        jQuery = layui.jquery;
+        layer_ = layui.layer;
+        jQuery("body").append('<script src="../../js/ztree/jquery.ztree.all.min.js"><\/script>');
+        var baseUrl = location.href.substring(0,location.href.indexOf(location.host) + location.host.length);
+        sailPromise
+            .getPromise("deptInfo",{url : "./json/role.json",type : "get"})
+            .dearFn = function (data) {
+                //判断是否信息异常
+                return data;
+            };
+        //sailPromise.getPromise("deptInfo").init();
+        window.vm = new Vue({
+            el : '#app',
+            data : {
+                eles : [],
+                verify : {
+                    a : function () {
+                        return false;
+                    }
+                },
+                submitBtn : [
+                    {
+                        text : "提交",
+                        type : "submit"
+                    },
+                    {
+                        text : "其他",
+                        $emit : "otherone"
+                    }
+                ],
+                bindForMethods : {}
+            },
+            methods : {
+                submitToServer : function (a,b) {
+                    layer_.open({
+                        content: JSON.stringify(a,null,'...').replace(/\n/g,'<br/>')
+                    })
+                    console.log(a);
+                    console.log(b);
+                },
+                otherOne : function ($child) {
+                    var str = "";
+                    for (var i in $child.fields) {
+                        str += i + " --> " + $child.fields[i].value + "<br/>";
+                    }
+                    layer.open({
+                        type : 1,
+                        content : str
+                    });
+                }
+            }
+        });
+        layer_.open({
+            type: 1,
+            closeBtn :0,
+            maxmin :true,
+            shade :0,
+            content: jQuery('#test'),
+            area: ['100%', '50%'],
+            offset: 'b'
+        });
+        jQuery('#testText').val(JSON.stringify(ele,null,'\t'));
+    });
+</script>
+</body>
+</html>
